@@ -10,6 +10,13 @@ public class Catbot {
         System.out.println("added: " + t.toString());
     }
 
+    public static void todo(String description) {
+        Task t = new Todo(description);
+        taskList.add(t);
+        System.out.println("Got it. I've added this task:\n" + t.toString());
+        System.out.println("Now you have " + taskList.size() + " tasks in the list.");
+    }
+
     public static void list() {
         if (taskList.isEmpty()) {
             System.out.println("No tasks in the list.");
@@ -46,7 +53,10 @@ public class Catbot {
         System.out.println("Hello! I'm Catbot\nWhat can I do for you?");
         while (true) {
             String input = sc.nextLine();
-            if (input.equals("list")) {
+            if (input.startsWith("todo ")) {
+                String description = input.substring(5);
+                Catbot.todo(description);
+            } else if (input.equals("list")) {
                 Catbot.list();
             } else if (input.startsWith("mark ")) {
                 int index = Integer.parseInt(input.substring(5)) - 1;
