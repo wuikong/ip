@@ -16,5 +16,6 @@ public class Catbot {
                 System.out.println(input);
             }
         }
+        sc.close();
     }
 }
