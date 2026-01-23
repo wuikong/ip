@@ -5,6 +5,10 @@ public class Catbot {
     private static ArrayList<Task> taskList = new ArrayList<>();
 
     public static void todo(String description) {
+        if (description.trim().isEmpty()) {
+            System.out.println("The description of a todo cannot be empty.");
+            return;
+        }
         Task t = new Todo(description);
         taskList.add(t);
         System.out.println("Got it. I've added this task:\n" + t.toString());
