@@ -71,19 +71,14 @@ public class Catbot {
             } else if (input.startsWith("deadline ")) {
                 String[] parts = input.substring(9).split(" /by ");
                 if (parts.length == 2) {
-                    String description = parts[0];
-                    String by = parts[1];
-                    Catbot.deadline(description, by);
+                    Catbot.deadline(parts[0], parts[1]);
                 } else {
                     System.out.println("Invalid deadline format. Use: deadline <description> /by <time>");
                 }
             } else if (input.startsWith("event ")) {
                 String[] parts = input.substring(6).split(" /from | /to "); 
                 if (parts.length == 3) {
-                    String description = parts[0];
-                    String from = parts[1];
-                    String to = parts[2];
-                    Catbot.event(description, from, to);
+                    Catbot.event(parts[0], parts[1], parts[2]);
                 } else {
                     System.out.println("Invalid event format. Use: event <description> /from <start time> /to <end time>");
                 }
