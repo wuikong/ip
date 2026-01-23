@@ -24,6 +24,13 @@ public class Catbot {
         System.out.println("Now you have " + taskList.size() + " tasks in the list.");
     }
 
+    public static void event(String description, String from, String to) {
+        Task t = new Event(description, from, to);
+        taskList.add(t);
+        System.out.println("Got it. I've added this task:\n" + t.toString());
+        System.out.println("Now you have " + taskList.size() + " tasks in the list.");
+    }
+
     public static void list() {
         if (taskList.isEmpty()) {
             System.out.println("No tasks in the list.");
@@ -71,6 +78,16 @@ public class Catbot {
                     Catbot.deadline(description, by);
                 } else {
                     System.out.println("Invalid deadline format. Use: deadline <description> /by <time>");
+                }
+            } else if (input.startsWith("event ")) {
+                String[] parts = input.substring(6).split(" /from | /to "); 
+                if (parts.length == 3) {
+                    String description = parts[0];
+                    String from = parts[1];
+                    String to = parts[2];
+                    Catbot.event(description, from, to);
+                } else {
+                    System.out.println("Invalid event format. Use: event <description> /from <start time> /to <end time>");
                 }
             } else if (input.equals("list")) {
                 Catbot.list();
