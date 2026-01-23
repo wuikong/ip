@@ -60,6 +60,16 @@ public class Catbot {
         }
     }
 
+    public static void delete(int index) {
+        if (index >= 0 && index < taskList.size()) {
+            Task t = taskList.remove(index);
+            System.out.println("Noted. I've removed this task:\n" + t.toString());
+            System.out.println("Now you have " + taskList.size() + " tasks in the list.");
+        } else {
+            System.out.println("Invalid task number.");
+        }
+    }
+
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
         System.out.println("Hello! I'm Catbot\nWhat can I do for you?");
@@ -90,6 +100,9 @@ public class Catbot {
             } else if (input.startsWith("unmark ")) {
                 int index = Integer.parseInt(input.substring(7)) - 1;
                 Catbot.unmark(index);
+            } else if (input.startsWith("delete ")) {
+                int index = Integer.parseInt(input.substring(7)) - 1;
+                Catbot.delete(index);
             } else if (input.equals("bye")) {
                 System.out.println("Bye. Hope to see you again soon!");
                 break;
