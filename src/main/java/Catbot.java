@@ -4,12 +4,6 @@ import java.util.ArrayList;
 public class Catbot {
     private static ArrayList<Task> taskList = new ArrayList<>();
 
-    public static void addTask(String task) {
-        Task t = new Task(task);
-        taskList.add(t);
-        System.out.println("added: " + t.toString());
-    }
-
     public static void todo(String description) {
         Task t = new Todo(description);
         taskList.add(t);
@@ -101,7 +95,7 @@ public class Catbot {
                 System.out.println("Bye. Hope to see you again soon!");
                 break;
             } else {
-                Catbot.addTask(input);
+                System.out.println("I'm sorry, I don't understand that command.");
             }
         }
         sc.close();
