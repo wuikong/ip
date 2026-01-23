@@ -74,42 +74,52 @@ public class Catbot {
         Scanner sc = new Scanner(System.in);
         System.out.println("Hello! I'm Catbot\nWhat can I do for you?");
         while (true) {
-            String input = sc.nextLine();
-            if (input.startsWith("todo ")) {
-                String description = input.substring(5);
-                Catbot.todo(description);
-            } else if (input.startsWith("deadline ")) {
-                String[] parts = input.substring(9).split(" /by ");
-                if (parts.length == 2) {
-                    Catbot.deadline(parts[0], parts[1]);
-                } else {
-                    System.out.println("Invalid deadline format. Use: deadline <description> /by <time>");
-                }
-            } else if (input.startsWith("event ")) {
-                String[] parts = input.substring(6).split(" /from | /to "); 
-                if (parts.length == 3) {
-                    Catbot.event(parts[0], parts[1], parts[2]);
-                } else {
-                    System.out.println("Invalid event format. Use: event <description> /from <start time> /to <end time>");
-                }
-            } else if (input.equals("list")) {
-                Catbot.list();
-            } else if (input.startsWith("mark ")) {
-                int index = Integer.parseInt(input.substring(5)) - 1;
-                Catbot.mark(index);
-            } else if (input.startsWith("unmark ")) {
-                int index = Integer.parseInt(input.substring(7)) - 1;
-                Catbot.unmark(index);
-            } else if (input.startsWith("delete ")) {
-                int index = Integer.parseInt(input.substring(7)) - 1;
-                Catbot.delete(index);
-            } else if (input.equals("bye")) {
-                System.out.println("Bye. Hope to see you again soon!");
-                break;
-            } else {
+            String[] tokens = sc.nextLine().split(" ", 2);
+            String[] parts;
+            Command cmd = null;
+            try {
+                cmd = Command.valueOf(tokens[0].toUpperCase());
+            } catch (IllegalArgumentException e) {
                 System.out.println("I'm sorry, I don't understand that command.");
+                continue;
+            }
+            switch(cmd) {
+                case TODO:
+                    Catbot.todo(tokens[1]);
+                    break;
+                case DEADLINE:
+                    parts = tokens[1].split(" /by ");
+                    if (parts.length == 2) {
+                        Catbot.deadline(parts[0], parts[1]);
+                    } else {
+                        System.out.println("Invalid deadline format. Use: deadline <description> /by <time>");
+                    }
+                    break;
+                case EVENT:
+                    parts = tokens[1].split(" /from | /to "); 
+                    if (parts.length == 3) {
+                        Catbot.event(parts[0], parts[1], parts[2]);
+                    } else {
+                        System.out.println("Invalid event format. Use: event <description> /from <start time> /to <end time>");
+                    }
+                    break;
+                case LIST:
+                    Catbot.list();
+                    break;
+                case MARK:
+                    Catbot.mark(Integer.parseInt(tokens[1]) - 1);
+                    break;
+                case UNMARK:
+                    Catbot.unmark(Integer.parseInt(tokens[1]) - 1);
+                    break;
+                case DELETE:
+                    Catbot.delete(Integer.parseInt(tokens[1]) - 1);
+                    break;
+                case BYE:
+                    System.out.println("Bye. Hope to see you again soon!");
+                    sc.close();
+                    return;
             }
         }
-        sc.close();
     }
 }
