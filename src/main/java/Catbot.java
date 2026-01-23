@@ -14,6 +14,7 @@ public class Catbot {
         if (taskList.isEmpty()) {
             System.out.println("No tasks in the list.");
         } else {
+            System.out.println("Here are the tasks in your list:");
             for (int i = 0; i < taskList.size(); i++) {
                 System.out.println((i + 1) + ". " + taskList.get(i).toString());
             }
