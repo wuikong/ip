@@ -4,12 +4,12 @@ import java.util.ArrayList;
 public class Catbot {
     private static ArrayList<String> taskList = new ArrayList<>();
 
-    private static void addTask(String task) {
+    public static void addTask(String task) {
         taskList.add(task);
         System.out.println("added: " + task);
     }
 
-    private static void list() {
+    public static void list() {
         if (taskList.isEmpty()) {
             System.out.println("No tasks in the list.");
         } else {
