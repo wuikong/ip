@@ -2,11 +2,12 @@ import java.util.Scanner;
 import java.util.ArrayList;
 
 public class Catbot {
-    private static ArrayList<String> taskList = new ArrayList<>();
+    private static ArrayList<Task> taskList = new ArrayList<>();
 
     public static void addTask(String task) {
-        taskList.add(task);
-        System.out.println("added: " + task);
+        Task t = new Task(task);
+        taskList.add(t);
+        System.out.println("added: " + t.toString());
     }
 
     public static void list() {
@@ -14,7 +15,7 @@ public class Catbot {
             System.out.println("No tasks in the list.");
         } else {
             for (int i = 0; i < taskList.size(); i++) {
-                System.out.println((i + 1) + ". " + taskList.get(i));
+                System.out.println((i + 1) + ". " + taskList.get(i).toString());
             }
         }
     }
