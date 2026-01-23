@@ -4,6 +4,11 @@ import java.util.ArrayList;
 public class Catbot {
     private static ArrayList<String> taskList = new ArrayList<>();
 
+    private static void addTask(String task) {
+        taskList.add(task);
+        System.out.println("added: " + task);
+    }
+
     private static void list() {
         if (taskList.isEmpty()) {
             System.out.println("No tasks in the list.");
@@ -25,7 +30,7 @@ public class Catbot {
                 System.out.println("Bye. Hope to see you again soon!");
                 break;
             } else {
-                System.out.println(input);
+                Catbot.addTask(input);
             }
         }
         sc.close();
