@@ -20,6 +20,16 @@ public class Catbot {
         }
     }
 
+    public static void mark(int index) {
+        if (index >= 0 && index < taskList.size()) {
+            Task t = taskList.get(index);
+            t.mark();
+            System.out.println("Nice! I've marked this task as done:\n" + t.toString());
+        } else {
+            System.out.println("Invalid task number.");
+        }
+    }
+
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
         System.out.println("Hello! I'm Catbot\nWhat can I do for you?");
@@ -27,6 +37,9 @@ public class Catbot {
             String input = sc.nextLine();
             if (input.equals("list")) {
                 Catbot.list();
+            } else if (input.startsWith("mark ")) {
+                int index = Integer.parseInt(input.substring(5)) - 1;
+                Catbot.mark(index);
             } else if (input.equals("bye")) {
                 System.out.println("Bye. Hope to see you again soon!");
                 break;
