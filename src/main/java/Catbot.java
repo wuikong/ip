@@ -50,7 +50,7 @@ public class Catbot {
             } else if (input.startsWith("mark ")) {
                 int index = Integer.parseInt(input.substring(5)) - 1;
                 Catbot.mark(index);
-            } else if (input.equals("unmark ")) {
+            } else if (input.startsWith("unmark ")) {
                 int index = Integer.parseInt(input.substring(7)) - 1;
                 Catbot.unmark(index);
             } else if (input.equals("bye")) {
