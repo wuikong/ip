@@ -17,6 +17,13 @@ public class Catbot {
         System.out.println("Now you have " + taskList.size() + " tasks in the list.");
     }
 
+    public static void deadline(String description, String by) {
+        Task t = new Deadline(description, by);
+        taskList.add(t);
+        System.out.println("Got it. I've added this task:\n" + t.toString());
+        System.out.println("Now you have " + taskList.size() + " tasks in the list.");
+    }
+
     public static void list() {
         if (taskList.isEmpty()) {
             System.out.println("No tasks in the list.");
@@ -56,6 +63,15 @@ public class Catbot {
             if (input.startsWith("todo ")) {
                 String description = input.substring(5);
                 Catbot.todo(description);
+            } else if (input.startsWith("deadline ")) {
+                String[] parts = input.substring(9).split(" /by ");
+                if (parts.length == 2) {
+                    String description = parts[0];
+                    String by = parts[1];
+                    Catbot.deadline(description, by);
+                } else {
+                    System.out.println("Invalid deadline format. Use: deadline <description> /by <time>");
+                }
             } else if (input.equals("list")) {
                 Catbot.list();
             } else if (input.startsWith("mark ")) {
