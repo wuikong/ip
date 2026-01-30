@@ -1,5 +1,8 @@
 package catbot;
 
+/**
+ * Supported command keywords for Catbot.
+ */
 public enum Command {
     BYE,
     LIST,

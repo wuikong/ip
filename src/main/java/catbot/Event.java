@@ -3,12 +3,22 @@ package catbot;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeParseException;
 
+/**
+ * Represents a task that occurs within a time range.
+ */
 public class Event extends Task {
     private String from;
     private String to;
     private LocalDateTime fromDateTime;
     private LocalDateTime toDateTime;
 
+    /**
+     * Creates an event task.
+     *
+     * @param description Task description.
+     * @param from Start date input.
+     * @param to End date input.
+     */
     public Event(String description, String from, String to) {
         super(description);
         this.from = from;
@@ -26,6 +36,11 @@ public class Event extends Task {
     }
 
     @Override
+    /**
+     * Returns a user-friendly string representation.
+     *
+     * @return Display string.
+     */
     public String toString() {
         String fromOutput = from;
         if (fromDateTime != null) {
@@ -39,6 +54,11 @@ public class Event extends Task {
     }
 
     @Override
+    /**
+     * Returns a string representation for storage.
+     *
+     * @return Storage string.
+     */
     public String toDataString() {
         return "E | " + super.toDataString() + " | " + from + " | " + to;
     }

@@ -2,6 +2,9 @@ package catbot;
 
 import java.time.format.DateTimeFormatter;
 
+/**
+ * Provides shared datetime formatting utilities.
+ */
 public class DateTimeUtil {
     public static final String INPUT_PATTERN = "yyyy-MM-dd HHmm";
     public static final String OUTPUT_PATTERN = "MMM d yyyy HHmm";
