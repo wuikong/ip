@@ -31,6 +31,16 @@ public class Task {
         this.isDone = false;
     }
 
+    /**
+     * Checks if the keyword is in the description of the task.
+     * 
+     * @param keyword
+     * @return true if the keyword is in the description, false otherwise
+     */
+    public boolean isInDescription(String keyword) {
+        return this.description.contains(keyword);
+    }
+
     @Override
     /**
      * Returns a user-friendly string representation.

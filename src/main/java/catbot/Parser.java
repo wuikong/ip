@@ -69,6 +69,12 @@ public class Parser {
                 }
                 tokenList.add(tokens[1]);
                 break;
+            case FIND:
+                if (tokens.length < 2 || tokens[1].trim().isEmpty()) {
+                    throw new CatbotException("Please provide a keyword to search for.");
+                }
+                tokenList.add(tokens[1]);
+                break;
             default:
                 break;
         }

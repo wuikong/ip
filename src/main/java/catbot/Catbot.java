@@ -27,7 +27,7 @@ public class Catbot {
      * Adds a deadline task.
      *
      * @param description Task description.
-     * @param by Due date input.
+     * @param by          Due date input.
      */
     public static void deadline(String description, String by) {
         Task t = new Deadline(description, by);
@@ -38,8 +38,8 @@ public class Catbot {
      * Adds an event task.
      *
      * @param description Task description.
-     * @param from Start date input.
-     * @param to End date input.
+     * @param from        Start date input.
+     * @param to          End date input.
      */
     public static void event(String description, String from, String to) {
         Task t = new Event(description, from, to);
@@ -90,6 +90,9 @@ public class Catbot {
                         break;
                     case DELETE:
                         taskList.delete(Integer.parseInt(tokens.get(1)) - 1);
+                        break;
+                    case FIND:
+                        taskList.find(tokens.get(1));
                         break;
                     case BYE:
                         try {
