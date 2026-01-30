@@ -42,37 +42,40 @@ public class Catbot {
             try {
                 ArrayList<String> tokens = parser.parse(sc.nextLine());
                 Command cmd = Command.valueOf(tokens.get(0));
-                switch(cmd) {
-                case TODO:
-                    Catbot.todo(tokens.get(1));
-                    break;
-                case DEADLINE:
-                    Catbot.deadline(tokens.get(1), tokens.get(2));
-                    break;
-                case EVENT:
-                    Catbot.event(tokens.get(1), tokens.get(2), tokens.get(3));
-                    break;
-                case LIST:
-                    taskList.list();
-                    break;
-                case MARK:
-                    taskList.mark(Integer.parseInt(tokens.get(1)) - 1);
-                    break;
-                case UNMARK:
-                    taskList.unmark(Integer.parseInt(tokens.get(1)) - 1);
-                    break;
-                case DELETE:
-                    taskList.delete(Integer.parseInt(tokens.get(1)) - 1);
-                    break;
-                case BYE:
-                    try {
-                        storage.saveTasks(taskList);
-                    } catch (IOException e) {
-                        ui.showSaveError(taskList.toString());
-                    }
-                    ui.showGoodbye();
-                    sc.close();
-                    return;
+                switch (cmd) {
+                    case TODO:
+                        Catbot.todo(tokens.get(1));
+                        break;
+                    case DEADLINE:
+                        Catbot.deadline(tokens.get(1), tokens.get(2));
+                        break;
+                    case EVENT:
+                        Catbot.event(tokens.get(1), tokens.get(2), tokens.get(3));
+                        break;
+                    case LIST:
+                        taskList.list();
+                        break;
+                    case MARK:
+                        taskList.mark(Integer.parseInt(tokens.get(1)) - 1);
+                        break;
+                    case UNMARK:
+                        taskList.unmark(Integer.parseInt(tokens.get(1)) - 1);
+                        break;
+                    case DELETE:
+                        taskList.delete(Integer.parseInt(tokens.get(1)) - 1);
+                        break;
+                    case FIND:
+                        taskList.find(tokens.get(1));
+                        break;
+                    case BYE:
+                        try {
+                            storage.saveTasks(taskList);
+                        } catch (IOException e) {
+                            ui.showSaveError(taskList.toString());
+                        }
+                        ui.showGoodbye();
+                        sc.close();
+                        return;
                 }
             } catch (CatbotException e) {
                 ui.showError(e.getMessage());
