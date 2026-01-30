@@ -4,7 +4,7 @@ public class Ui {
     public void showWelcome() {
         System.out.println("Hello! I'm Catbot\nWhat can I do for you?");
     }
-    
+
     public void showGoodbye() {
         System.out.println("Bye. Hope to see you again soon!");
     }

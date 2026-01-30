@@ -66,7 +66,7 @@ public class Storage {
         if (parentDir != null) {
             parentDir.mkdirs();
         }
-        
+
         FileWriter writer = new FileWriter(this.filePath);
         writer.write(taskList.toString() + "\n");
         writer.close();
