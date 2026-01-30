@@ -7,11 +7,7 @@ public class Catbot {
     private static TaskList taskList;
     private final static String DATA_FILE = "data/catbot_data.txt";
 
-    public static void todo(String description) {
-        if (description.trim().isEmpty()) {
-            System.out.println("The description of a todo cannot be empty.");
-            return;
-        }
+    public static void todo(String description) throws CatbotException {
         Task t = new Todo(description);
         taskList.addTask(t);
     }
@@ -27,25 +23,24 @@ public class Catbot {
     }
 
     public static void main(String[] args) {
+        Ui ui = new Ui();
         Storage storage = new Storage(DATA_FILE);
         try {
             taskList = new TaskList(storage.loadTasks());
         } catch (FileNotFoundException e) {
             // File not found, start with empty task list
         } catch (Exception e) {
-            System.out.println("Could not load tasks from file. Starting with an empty task list.");
+            ui.showLoadError();
             taskList = new TaskList();
         }
         Scanner sc = new Scanner(System.in);
-        System.out.println("Hello! I'm Catbot\nWhat can I do for you?");
+        ui.showWelcome();
         Parser parser = new Parser();
         while (true) {
-            ArrayList<String> tokens = parser.parse(sc.nextLine());
-            if (tokens == null) {
-                continue;
-            }
-            Command cmd = Command.valueOf(tokens.get(0));
-            switch(cmd) {
+            try {
+                ArrayList<String> tokens = parser.parse(sc.nextLine());
+                Command cmd = Command.valueOf(tokens.get(0));
+                switch(cmd) {
                 case TODO:
                     Catbot.todo(tokens.get(1));
                     break;
@@ -71,12 +66,14 @@ public class Catbot {
                     try {
                         storage.saveTasks(taskList);
                     } catch (IOException e) {
-                        System.out.println("Could not save tasks to file. Please save your tasks manually.");
-                        System.out.println(taskList.toString());
+                        ui.showSaveError(taskList.toString());
                     }
-                    System.out.println("Bye. Hope to see you again soon!");
+                    ui.showGoodbye();
                     sc.close();
                     return;
+                }
+            } catch (CatbotException e) {
+                ui.showError(e.getMessage());
             }
         }
     }
