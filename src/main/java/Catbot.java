@@ -163,7 +163,7 @@ public class Catbot {
                     if (parts.length == 2) {
                         Catbot.deadline(parts[0], parts[1]);
                     } else {
-                        System.out.println("Invalid deadline format. Use: deadline <description> /by <time>");
+                        System.out.println("Invalid deadline format. Use: deadline <description> /by <" + DateTimeUtil.INPUT_PATTERN + ">");
                     }
                     break;
                 case EVENT:
@@ -171,7 +171,7 @@ public class Catbot {
                     if (parts.length == 3) {
                         Catbot.event(parts[0], parts[1], parts[2]);
                     } else {
-                        System.out.println("Invalid event format. Use: event <description> /from <start time> /to <end time>");
+                        System.out.println("Invalid event format. Use: event <description> /from <" + DateTimeUtil.INPUT_PATTERN + "> /to <" + DateTimeUtil.INPUT_PATTERN + ">");
                     }
                     break;
                 case LIST:
