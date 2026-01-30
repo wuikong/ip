@@ -1,3 +1,5 @@
+package catbot;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 
