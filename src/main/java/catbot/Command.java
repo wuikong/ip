@@ -1,3 +1,5 @@
+package catbot;
+
 public enum Command {
     BYE,
     LIST,
