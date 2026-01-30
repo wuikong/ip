@@ -1,12 +1,11 @@
 import java.util.Scanner;
-import java.util.ArrayList;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
 
 public class Catbot {
-    private static ArrayList<Task> taskList = new ArrayList<>();
+    private static TaskList taskList;
     private final static String DATA_FILE = "data/catbot_data.txt";
 
     public static void todo(String description) {
@@ -15,67 +14,21 @@ public class Catbot {
             return;
         }
         Task t = new Todo(description);
-        taskList.add(t);
-        System.out.println("Got it. I've added this task:\n" + t.toString());
-        System.out.println("Now you have " + taskList.size() + " tasks in the list.");
+        taskList.addTask(t);
     }
 
     public static void deadline(String description, String by) {
         Task t = new Deadline(description, by);
-        taskList.add(t);
-        System.out.println("Got it. I've added this task:\n" + t.toString());
-        System.out.println("Now you have " + taskList.size() + " tasks in the list.");
+        taskList.addTask(t);
     }
 
     public static void event(String description, String from, String to) {
         Task t = new Event(description, from, to);
-        taskList.add(t);
-        System.out.println("Got it. I've added this task:\n" + t.toString());
-        System.out.println("Now you have " + taskList.size() + " tasks in the list.");
+        taskList.addTask(t);
     }
 
-    public static void list() {
-        if (taskList.isEmpty()) {
-            System.out.println("No tasks in the list.");
-        } else {
-            System.out.println("Here are the tasks in your list:");
-            for (int i = 0; i < taskList.size(); i++) {
-                System.out.println((i + 1) + ". " + taskList.get(i).toString());
-            }
-        }
-    }
-
-    public static void mark(int index) {
-        if (index >= 0 && index < taskList.size()) {
-            Task t = taskList.get(index);
-            t.mark();
-            System.out.println("Nice! I've marked this task as done:\n" + t.toString());
-        } else {
-            System.out.println("Invalid task number.");
-        }
-    }
-
-    public static void unmark(int index) {
-        if (index >= 0 && index < taskList.size()) {
-            Task t = taskList.get(index);
-            t.unmark();
-            System.out.println("OK, I've marked this task as not done yet:\n" + t.toString());
-        } else {
-            System.out.println("Invalid task number.");
-        }
-    }
-
-    public static void delete(int index) {
-        if (index >= 0 && index < taskList.size()) {
-            Task t = taskList.remove(index);
-            System.out.println("Noted. I've removed this task:\n" + t.toString());
-            System.out.println("Now you have " + taskList.size() + " tasks in the list.");
-        } else {
-            System.out.println("Invalid task number.");
-        }
-    }
-
-    public static void loadTasks(String filename, ArrayList<Task> taskList) throws FileNotFoundException {
+    public static TaskList loadTasks(String filename) throws FileNotFoundException {
+        taskList = new TaskList();
         Scanner sc = new Scanner(new File(filename));
         while (sc.hasNextLine()) {
             String line = sc.nextLine();
@@ -113,13 +66,14 @@ public class Catbot {
                 if (isDone) {
                     t.mark();
                 }
-                taskList.add(t);
+                taskList.addTask(t);
             }
         }
         sc.close();
+        return taskList;
     }
 
-    public static void saveTasks(String filename, ArrayList<Task> taskList) throws IOException {
+    public static void saveTasks(String filename, TaskList taskList) throws IOException {
         File file = new File(filename);
         File parentDir = file.getParentFile();
         if (parentDir != null) {
@@ -127,20 +81,17 @@ public class Catbot {
         }
         
         FileWriter writer = new FileWriter(filename);
-        for (Task t : taskList) {
-            writer.write(t.toDataString() + "\n");
-        }
+        writer.write(taskList.toString() + "\n");
         writer.close();
     }
 
     public static void main(String[] args) {
         try {
-            Catbot.loadTasks(DATA_FILE, taskList);
+            taskList = Catbot.loadTasks(DATA_FILE);
         } catch (FileNotFoundException e) {
             // File not found, start with empty task list
         } catch (Exception e) {
             System.out.println("Could not load tasks from file. Starting with an empty task list.");
-            taskList.clear();
         }
         Scanner sc = new Scanner(System.in);
         System.out.println("Hello! I'm Catbot\nWhat can I do for you?");
@@ -175,23 +126,23 @@ public class Catbot {
                     }
                     break;
                 case LIST:
-                    Catbot.list();
+                    taskList.list();
                     break;
                 case MARK:
-                    Catbot.mark(Integer.parseInt(tokens[1]) - 1);
+                    taskList.mark(Integer.parseInt(tokens[1]) - 1);
                     break;
                 case UNMARK:
-                    Catbot.unmark(Integer.parseInt(tokens[1]) - 1);
+                    taskList.unmark(Integer.parseInt(tokens[1]) - 1);
                     break;
                 case DELETE:
-                    Catbot.delete(Integer.parseInt(tokens[1]) - 1);
+                    taskList.delete(Integer.parseInt(tokens[1]) - 1);
                     break;
                 case BYE:
                     try {
                         Catbot.saveTasks(DATA_FILE, taskList);
                     } catch (IOException e) {
                         System.out.println("Could not save tasks to file. Please save your tasks manually.");
-                        Catbot.list();
+                        System.out.println(taskList.toString());
                     }
                     System.out.println("Bye. Hope to see you again soon!");
                     sc.close();
