@@ -1,3 +1,4 @@
+import java.util.ArrayList;
 import java.util.Scanner;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -37,47 +38,34 @@ public class Catbot {
         }
         Scanner sc = new Scanner(System.in);
         System.out.println("Hello! I'm Catbot\nWhat can I do for you?");
+        Parser parser = new Parser();
         while (true) {
-            String[] tokens = sc.nextLine().split(" ", 2);
-            String[] parts;
-            Command cmd = null;
-            try {
-                cmd = Command.valueOf(tokens[0].toUpperCase());
-            } catch (IllegalArgumentException e) {
-                System.out.println("I'm sorry, I don't understand that command.");
+            ArrayList<String> tokens = parser.parse(sc.nextLine());
+            if (tokens == null) {
                 continue;
             }
+            Command cmd = Command.valueOf(tokens.get(0));
             switch(cmd) {
                 case TODO:
-                    Catbot.todo(tokens[1]);
+                    Catbot.todo(tokens.get(1));
                     break;
                 case DEADLINE:
-                    parts = tokens[1].split(" /by ");
-                    if (parts.length == 2) {
-                        Catbot.deadline(parts[0], parts[1]);
-                    } else {
-                        System.out.println("Invalid deadline format. Use: deadline <description> /by <" + DateTimeUtil.INPUT_PATTERN + ">");
-                    }
+                    Catbot.deadline(tokens.get(1), tokens.get(2));
                     break;
                 case EVENT:
-                    parts = tokens[1].split(" /from | /to "); 
-                    if (parts.length == 3) {
-                        Catbot.event(parts[0], parts[1], parts[2]);
-                    } else {
-                        System.out.println("Invalid event format. Use: event <description> /from <" + DateTimeUtil.INPUT_PATTERN + "> /to <" + DateTimeUtil.INPUT_PATTERN + ">");
-                    }
+                    Catbot.event(tokens.get(1), tokens.get(2), tokens.get(3));
                     break;
                 case LIST:
                     taskList.list();
                     break;
                 case MARK:
-                    taskList.mark(Integer.parseInt(tokens[1]) - 1);
+                    taskList.mark(Integer.parseInt(tokens.get(1)) - 1);
                     break;
                 case UNMARK:
-                    taskList.unmark(Integer.parseInt(tokens[1]) - 1);
+                    taskList.unmark(Integer.parseInt(tokens.get(1)) - 1);
                     break;
                 case DELETE:
-                    taskList.delete(Integer.parseInt(tokens[1]) - 1);
+                    taskList.delete(Integer.parseInt(tokens.get(1)) - 1);
                     break;
                 case BYE:
                     try {
