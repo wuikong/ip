@@ -20,4 +20,8 @@ public class Task {
         String checkbox = "[" + (isDone ? "X" : " ") + "] ";
         return checkbox + description;
     }
+
+    public String toDataString() {
+        return (isDone ? "1" : "0") + " | " + description;
+    }
 }

@@ -1,8 +1,13 @@
 import java.util.Scanner;
 import java.util.ArrayList;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileWriter;
+import java.io.IOException;
 
 public class Catbot {
     private static ArrayList<Task> taskList = new ArrayList<>();
+    private final static String DATA_FILE = "data/catbot_data.txt";
 
     public static void todo(String description) {
         if (description.trim().isEmpty()) {
@@ -70,7 +75,73 @@ public class Catbot {
         }
     }
 
+    public static void loadTasks(String filename, ArrayList<Task> taskList) throws FileNotFoundException {
+        Scanner sc = new Scanner(new File(filename));
+        while (sc.hasNextLine()) {
+            String line = sc.nextLine();
+            String[] parts = line.split(" \\| ");
+            if (parts.length < 3) {
+                System.out.println("Malformed line in data file: " + line);
+                continue;
+            }
+            String type = parts[0];
+            boolean isDone = parts[1].equals("1");
+            String description = parts[2];
+            Task t = null;
+            switch (type) {
+                case "T":
+                    t = new Todo(description);
+                    break;
+                case "D":
+                    if (parts.length < 4) {
+                        System.out.println("Malformed deadline in data file: " + line);
+                        break;
+                    }
+                    t = new Deadline(description, parts[3]);
+                    break;
+                case "E":
+                    if (parts.length < 5) {
+                        System.out.println("Malformed event in data file: " + line);
+                        break;
+                    }
+                    t = new Event(description, parts[3], parts[4]);
+                    break;
+                default:
+                    System.out.println("Unknown task type in data file: " + type);
+            }
+            if (t != null) {
+                if (isDone) {
+                    t.mark();
+                }
+                taskList.add(t);
+            }
+        }
+        sc.close();
+    }
+
+    public static void saveTasks(String filename, ArrayList<Task> taskList) throws IOException {
+        File file = new File(filename);
+        File parentDir = file.getParentFile();
+        if (parentDir != null) {
+            parentDir.mkdirs();
+        }
+        
+        FileWriter writer = new FileWriter(filename);
+        for (Task t : taskList) {
+            writer.write(t.toDataString() + "\n");
+        }
+        writer.close();
+    }
+
     public static void main(String[] args) {
+        try {
+            Catbot.loadTasks(DATA_FILE, taskList);
+        } catch (FileNotFoundException e) {
+            // File not found, start with empty task list
+        } catch (Exception e) {
+            System.out.println("Could not load tasks from file. Starting with an empty task list.");
+            taskList.clear();
+        }
         Scanner sc = new Scanner(System.in);
         System.out.println("Hello! I'm Catbot\nWhat can I do for you?");
         while (true) {
@@ -116,6 +187,12 @@ public class Catbot {
                     Catbot.delete(Integer.parseInt(tokens[1]) - 1);
                     break;
                 case BYE:
+                    try {
+                        Catbot.saveTasks(DATA_FILE, taskList);
+                    } catch (IOException e) {
+                        System.out.println("Could not save tasks to file. Please save your tasks manually.");
+                        Catbot.list();
+                    }
                     System.out.println("Bye. Hope to see you again soon!");
                     sc.close();
                     return;
