@@ -10,7 +10,7 @@ public class Ui {
     public void showWelcome() {
         System.out.println("Hello! I'm Catbot\nWhat can I do for you?");
     }
-    
+
     /**
      * Shows the goodbye message.
      */

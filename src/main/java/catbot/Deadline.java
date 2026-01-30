@@ -24,7 +24,6 @@ public class Deadline extends Task {
         } catch (DateTimeParseException e) {
             this.byDateTime = null;
         }
-            
     }
 
     @Override
