@@ -2,23 +2,42 @@ package catbot;
 
 import java.util.ArrayList;
 
+/**
+ * Manages a list of tasks and related operations.
+ */
 public class TaskList {
     private ArrayList<Task> taskList;
 
+    /**
+     * Creates an empty task list.
+     */
     public TaskList() {
         this.taskList = new ArrayList<>();
     }
 
+    /**
+     * Creates a task list from an existing list of tasks.
+     *
+     * @param tasks Initial tasks to store.
+     */
     public TaskList(ArrayList<Task> tasks) {
         this.taskList = tasks;
     }
 
+    /**
+     * Adds a task to the list.
+     *
+     * @param t Task to add.
+     */
     public void addTask(Task t) {
         this.taskList.add(t);
         System.out.println("Got it. I've added this task:\n" + t.toString());
         System.out.println("Now you have " + this.taskList.size() + " tasks in the list.");
     }
 
+    /**
+     * Prints all tasks in the list.
+     */
     public void list() {
         if (this.taskList.isEmpty()) {
             System.out.println("No tasks in the list.");
@@ -30,6 +49,11 @@ public class TaskList {
         }
     }
 
+    /**
+     * Marks the task at the given index as completed.
+     *
+     * @param index Zero-based task index.
+     */
     public void mark(int index) {
         if (index >= 0 && index < this.taskList.size()) {
             Task t = this.taskList.get(index);
@@ -40,6 +64,11 @@ public class TaskList {
         }
     }
 
+    /**
+     * Marks the task at the given index as not completed.
+     *
+     * @param index Zero-based task index.
+     */
     public void unmark(int index) {
         if (index >= 0 && index < this.taskList.size()) {
             Task t = this.taskList.get(index);
@@ -50,6 +79,11 @@ public class TaskList {
         }
     }
 
+    /**
+     * Removes the task at the given index.
+     *
+     * @param index Zero-based task index.
+     */
     public void delete(int index) {
         if (index >= 0 && index < this.taskList.size()) {
             Task t = this.taskList.remove(index);
@@ -60,6 +94,11 @@ public class TaskList {
         }
     }
 
+    /**
+     * Returns a serialized representation for storage.
+     *
+     * @return Storage string.
+     */
     public String toString() {
         StringBuilder sb = new StringBuilder();
         for (Task t : taskList) {

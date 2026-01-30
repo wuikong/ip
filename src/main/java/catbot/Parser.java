@@ -3,7 +3,17 @@ package catbot;
 import java.util.ArrayList;
 import java.util.Arrays;
 
+/**
+ * Parses user input into command tokens.
+ */
 public class Parser {
+    /**
+     * Parses an input line into tokens for command handling.
+     *
+     * @param input Raw user input.
+     * @return Tokens with command keyword and arguments.
+     * @throws CatbotException If the input is invalid.
+     */
     public ArrayList<String> parse(String input) throws CatbotException {
         ArrayList<String> tokenList = new ArrayList<>();
         String[] tokens = input.split(" ", 2);

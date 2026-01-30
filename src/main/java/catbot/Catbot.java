@@ -5,25 +5,52 @@ import java.util.Scanner;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 
+/**
+ * Runs the Catbot application and dispatches user commands.
+ */
 public class Catbot {
     private static TaskList taskList;
     private final static String DATA_FILE = "data/catbot_data.txt";
 
+    /**
+     * Adds a todo task.
+     *
+     * @param description Task description.
+     * @throws CatbotException If the task cannot be created.
+     */
     public static void todo(String description) throws CatbotException {
         Task t = new Todo(description);
         taskList.addTask(t);
     }
 
+    /**
+     * Adds a deadline task.
+     *
+     * @param description Task description.
+     * @param by Due date input.
+     */
     public static void deadline(String description, String by) {
         Task t = new Deadline(description, by);
         taskList.addTask(t);
     }
 
+    /**
+     * Adds an event task.
+     *
+     * @param description Task description.
+     * @param from Start date input.
+     * @param to End date input.
+     */
     public static void event(String description, String from, String to) {
         Task t = new Event(description, from, to);
         taskList.addTask(t);
     }
 
+    /**
+     * Starts the Catbot command loop.
+     *
+     * @param args Command-line arguments.
+     */
     public static void main(String[] args) {
         Ui ui = new Ui();
         Storage storage = new Storage(DATA_FILE);
