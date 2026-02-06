@@ -1,5 +1,5 @@
-# IDEA files
-/.idea/
+# VS Code files
+/.vscode/
 /out/
 /*.iml
 
