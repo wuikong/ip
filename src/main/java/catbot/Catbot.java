@@ -72,7 +72,7 @@ public class Catbot {
         Parser parser = new Parser();
         while (true) {
             try {
-                ArrayList<String> tokens = parser.parse(sc.nextLine());
+                ArrayList<String> tokens = parser.parseInput(sc.nextLine());
                 Command cmd = Command.valueOf(tokens.get(0));
                 switch (cmd) {
                 case TODO:
@@ -121,6 +121,6 @@ public class Catbot {
      * Generates a response for the user's chat message.
      */
     public String getResponse(String input) {
-        return "Duke heard: " + input;
+        return "Catbot heard: " + input;
     }
 }

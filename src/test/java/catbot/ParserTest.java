@@ -11,7 +11,7 @@ public class ParserTest {
     @Test
     public void parse_todoWithDescription_returnsTokens() throws Exception {
         Parser parser = new Parser();
-        List<String> result = parser.parse("todo read book");
+        List<String> result = parser.parseInput("todo read book");
 
         assertEquals(List.of("TODO", "read book"), result);
     }
@@ -19,7 +19,7 @@ public class ParserTest {
     @Test
     public void parse_deadlineWithValidFormat_returnsTokens() throws Exception {
         Parser parser = new Parser();
-        List<String> result = parser.parse("deadline submit report /by 2024-10-01 1800");
+        List<String> result = parser.parseInput("deadline submit report /by 2024-10-01 1800");
 
         assertEquals(List.of("DEADLINE", "submit report", "2024-10-01 1800"), result);
     }
@@ -27,7 +27,7 @@ public class ParserTest {
     @Test
     public void parse_eventWithValidFormat_returnsTokens() throws Exception {
         Parser parser = new Parser();
-        List<String> result = parser.parse("event project meeting /from 2024-01-01 0900 /to 2024-01-01 1100");
+        List<String> result = parser.parseInput("event project meeting /from 2024-01-01 0900 /to 2024-01-01 1100");
 
         assertEquals(
                 List.of("EVENT", "project meeting", "2024-01-01 0900", "2024-01-01 1100"),
@@ -38,7 +38,7 @@ public class ParserTest {
     public void parse_unknownCommand_throwsCatbotException() {
         Parser parser = new Parser();
 
-        CatbotException error = assertThrows(CatbotException.class, () -> parser.parse("foo bar"));
+        CatbotException error = assertThrows(CatbotException.class, () -> parser.parseInput("foo bar"));
 
         assertEquals("I'm sorry, I don't understand that command.", error.getMessage());
     }
@@ -47,7 +47,7 @@ public class ParserTest {
     public void parse_todoWithoutDescription_throwsCatbotException() {
         Parser parser = new Parser();
 
-        CatbotException error = assertThrows(CatbotException.class, () -> parser.parse("todo"));
+        CatbotException error = assertThrows(CatbotException.class, () -> parser.parseInput("todo"));
 
         assertEquals("The description of a todo cannot be empty.", error.getMessage());
     }
@@ -56,7 +56,7 @@ public class ParserTest {
     public void parse_deadlineMissingBy_throwsCatbotException() {
         Parser parser = new Parser();
 
-        CatbotException error = assertThrows(CatbotException.class, () -> parser.parse("deadline submit report"));
+        CatbotException error = assertThrows(CatbotException.class, () -> parser.parseInput("deadline submit report"));
 
         assertEquals(
                 "Invalid deadline format. Use: deadline <description> /by <" + DateTimeUtil.INPUT_PATTERN + ">",
@@ -67,7 +67,7 @@ public class ParserTest {
     public void parse_markWithNonNumericIndex_throwsCatbotException() {
         Parser parser = new Parser();
 
-        CatbotException error = assertThrows(CatbotException.class, () -> parser.parse("mark two"));
+        CatbotException error = assertThrows(CatbotException.class, () -> parser.parseInput("mark two"));
 
         assertEquals("Please provide a valid task number.", error.getMessage());
     }

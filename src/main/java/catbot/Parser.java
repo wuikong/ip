@@ -14,17 +14,12 @@ public class Parser {
      * @return Tokens with command keyword and arguments.
      * @throws CatbotException If the input is invalid.
      */
-    public ArrayList<String> parse(String input) throws CatbotException {
+    public ArrayList<String> parseInput(String input) throws CatbotException {
         ArrayList<String> tokenList = new ArrayList<>();
         String[] tokens = input.split(" ", 2);
         tokens[0] = tokens[0].toUpperCase();
-        Command cmd = null;
-        try {
-            cmd = Command.valueOf(tokens[0]);
-        } catch (IllegalArgumentException e) {
-            throw new CatbotException("I'm sorry, I don't understand that command.");
-        }
         tokenList.add(tokens[0]);
+        Command cmd = Command.parseCommand(input);
         switch (cmd) {
         case TODO:
             if (tokens.length < 2 || tokens[1].trim().isEmpty()) {
@@ -75,6 +70,8 @@ public class Parser {
             }
             tokenList.add(tokens[1]);
             break;
+        case NULL:
+            throw new CatbotException("I'm sorry, I don't understand that command.");
         default:
             break;
         }
