@@ -7,6 +7,11 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Scanner;
 
+import catbot.task.Deadline;
+import catbot.task.Event;
+import catbot.task.Task;
+import catbot.task.Todo;
+
 /**
  * Handles loading and saving tasks to persistent storage.
  */

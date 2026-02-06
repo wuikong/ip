@@ -2,6 +2,8 @@ package catbot;
 
 import java.util.ArrayList;
 
+import catbot.task.Task;
+
 /**
  * Manages a list of tasks and related operations.
  */

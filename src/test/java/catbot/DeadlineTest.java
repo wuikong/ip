@@ -6,6 +6,8 @@ import java.time.LocalDateTime;
 
 import org.junit.jupiter.api.Test;
 
+import catbot.task.Deadline;
+
 public class DeadlineTest {
     @Test
     public void toString_validDateTime_formatsOutput() {

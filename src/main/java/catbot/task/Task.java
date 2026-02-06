@@ -1,4 +1,4 @@
-package catbot;
+package catbot.task;
 
 /**
  * Represents a task with a description and completion state.

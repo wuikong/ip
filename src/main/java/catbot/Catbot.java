@@ -5,6 +5,11 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Scanner;
 
+import catbot.task.Deadline;
+import catbot.task.Event;
+import catbot.task.Task;
+import catbot.task.Todo;
+
 /**
  * Runs the Catbot application and dispatches user commands.
  */
