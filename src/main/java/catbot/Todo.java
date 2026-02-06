@@ -14,21 +14,11 @@ public class Todo extends Task {
     }
 
     @Override
-    /**
-     * Returns a user-friendly string representation.
-     *
-     * @return Display string.
-     */
     public String toString() {
         return "[T]" + super.toString();
     }
 
     @Override
-    /**
-     * Returns a string representation for storage.
-     *
-     * @return Storage string.
-     */
     public String toDataString() {
         return "T | " + super.toDataString();
     }

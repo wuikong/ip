@@ -27,11 +27,6 @@ public class Deadline extends Task {
     }
 
     @Override
-    /**
-     * Returns a user-friendly string representation.
-     *
-     * @return Display string.
-     */
     public String toString() {
         if (byDateTime == null) {
             return "[D]" + super.toString() + " (by: " + by + ")";
@@ -40,11 +35,6 @@ public class Deadline extends Task {
     }
 
     @Override
-    /**
-     * Returns a string representation for storage.
-     *
-     * @return Storage string.
-     */
     public String toDataString() {
         return "D | " + super.toDataString() + " | " + by;
     }

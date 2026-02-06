@@ -96,7 +96,7 @@ public class TaskList {
 
     /**
      * Finds and lists tasks that contain the given keyword.
-     * 
+     *
      * @param keyword Keyword to search for in task descriptions.
      */
     public void find(String keyword) {
@@ -116,11 +116,7 @@ public class TaskList {
         }
     }
 
-    /**
-     * Returns a serialized representation for storage.
-     *
-     * @return Storage string.
-     */
+    @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
         for (Task t : taskList) {

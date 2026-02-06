@@ -36,11 +36,6 @@ public class Event extends Task {
     }
 
     @Override
-    /**
-     * Returns a user-friendly string representation.
-     *
-     * @return Display string.
-     */
     public String toString() {
         String fromOutput = from;
         if (fromDateTime != null) {
@@ -54,11 +49,6 @@ public class Event extends Task {
     }
 
     @Override
-    /**
-     * Returns a string representation for storage.
-     *
-     * @return Storage string.
-     */
     public String toDataString() {
         return "E | " + super.toDataString() + " | " + from + " | " + to;
     }

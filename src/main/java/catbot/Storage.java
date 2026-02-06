@@ -1,11 +1,11 @@
 package catbot;
 
-import java.util.ArrayList;
-import java.util.Scanner;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Scanner;
 
 /**
  * Handles loading and saving tasks to persistent storage.
@@ -43,25 +43,25 @@ public class Storage {
             String description = parts[2];
             Task t = null;
             switch (type) {
-                case "T":
-                    t = new Todo(description);
+            case "T":
+                t = new Todo(description);
+                break;
+            case "D":
+                if (parts.length < 4) {
+                    System.out.println("Malformed deadline in data file: " + line);
                     break;
-                case "D":
-                    if (parts.length < 4) {
-                        System.out.println("Malformed deadline in data file: " + line);
-                        break;
-                    }
-                    t = new Deadline(description, parts[3]);
+                }
+                t = new Deadline(description, parts[3]);
+                break;
+            case "E":
+                if (parts.length < 5) {
+                    System.out.println("Malformed event in data file: " + line);
                     break;
-                case "E":
-                    if (parts.length < 5) {
-                        System.out.println("Malformed event in data file: " + line);
-                        break;
-                    }
-                    t = new Event(description, parts[3], parts[4]);
-                    break;
-                default:
-                    System.out.println("Unknown task type in data file: " + type);
+                }
+                t = new Event(description, parts[3], parts[4]);
+                break;
+            default:
+                System.out.println("Unknown task type in data file: " + type);
             }
             if (t != null) {
                 if (isDone) {
