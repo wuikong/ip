@@ -33,7 +33,7 @@ public class Task {
 
     /**
      * Checks if the keyword is in the description of the task.
-     * 
+     *
      * @param keyword
      * @return true if the keyword is in the description, false otherwise
      */
@@ -42,11 +42,6 @@ public class Task {
     }
 
     @Override
-    /**
-     * Returns a user-friendly string representation.
-     *
-     * @return Display string.
-     */
     public String toString() {
         String checkbox = "[" + (isDone ? "X" : " ") + "] ";
         return checkbox + description;
