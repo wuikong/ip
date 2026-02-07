@@ -23,7 +23,7 @@ public class Main extends Application {
             AnchorPane ap = fxmlLoader.load();
             Scene scene = new Scene(ap);
             stage.setScene(scene);
-            fxmlLoader.<MainWindow>getController().setDuke(catbot); // inject the Catbot instance
+            fxmlLoader.<MainWindow>getController().setCatbot(catbot); // inject the Catbot instance
             stage.show();
         } catch (IOException e) {
             e.printStackTrace();
