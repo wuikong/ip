@@ -1,36 +1,57 @@
 package catbot;
 
+import java.util.ArrayList;
+
 /**
- * Supported command keywords for Catbot.
+ * Represents a command issued by the user.
  */
-public enum Command {
-    BYE,
-    LIST,
-    MARK,
-    UNMARK,
-    DELETE,
-    TODO,
-    DEADLINE,
-    EVENT,
-    FIND,
-    NULL;
+public class Command {
+    private CommandEnum commandEnum;
+    private ArrayList<String> args;
+    private int taskIndex;
 
     /**
-     * Parse command from user input.
+     * Creates a Command instance.
      *
-     * @param input User input string.
-     * @return Command enum value.
+     * @param commandEnum Command type.
      */
-    public static Command parseCommand(String input) {
-        input = input.trim();
-        if (input.isEmpty()) {
-            return NULL;
-        }
+    public Command(CommandEnum commandEnum) {
+        this.commandEnum = commandEnum;
+        this.args = new ArrayList<>();
+        this.taskIndex = -1;
+    }
 
-        try {
-            return Command.valueOf(input.split(" ")[0].toUpperCase());
-        } catch (IllegalArgumentException e) {
-            return NULL;
-        }
+    /**
+     * Creates a Command instance with arguments.
+     *
+     * @param commandEnum Command type.
+     * @param args        Command arguments.
+     */
+    public Command(CommandEnum commandEnum, ArrayList<String> args) {
+        this(commandEnum);
+        this.args = args;
+    }
+
+    /**
+     * Creates a Command instance with a task index.
+     *
+     * @param commandEnum Command type.
+     * @param taskIndex   Task index argument.
+     */
+    public Command(CommandEnum commandEnum, int taskIndex) {
+        this(commandEnum);
+        this.taskIndex = taskIndex;
+    }
+
+    public CommandEnum getCommandEnum() {
+        return this.commandEnum;
+    }
+
+    public ArrayList<String> getArgs() {
+        return this.args;
+    }
+
+    public int getTaskIndex() {
+        return this.taskIndex;
     }
 }
