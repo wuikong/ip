@@ -2,6 +2,8 @@ package catbot;
 
 import java.util.ArrayList;
 
+import catbot.task.Task;
+
 /**
  * Manages a list of tasks and related operations.
  */
@@ -25,27 +27,35 @@ public class TaskList {
     }
 
     /**
+     * Returns the number of tasks in the list.
+     *
+     * @return Number of tasks.
+     */
+    public int getSize() {
+        return this.taskList.size();
+    }
+
+    /**
      * Adds a task to the list.
      *
      * @param t Task to add.
      */
     public void addTask(Task t) {
         this.taskList.add(t);
-        System.out.println("Got it. I've added this task:\n" + t.toString());
-        System.out.println("Now you have " + this.taskList.size() + " tasks in the list.");
     }
 
     /**
      * Prints all tasks in the list.
      */
-    public void list() {
+    public String list() {
         if (this.taskList.isEmpty()) {
-            System.out.println("No tasks in the list.");
+            return "No tasks in the list.";
         } else {
-            System.out.println("Here are the tasks in your list:");
-            for (int i = 0; i < this.taskList.size(); i++) {
-                System.out.println((i + 1) + ". " + this.taskList.get(i).toString());
+            StringBuilder sb = new StringBuilder("Here are the tasks in your list:");
+            for (int i = 0; i < this.getSize(); i++) {
+                sb.append("\n").append(i + 1).append(". ").append(this.taskList.get(i).toString());
             }
+            return sb.toString();
         }
     }
 
@@ -54,13 +64,13 @@ public class TaskList {
      *
      * @param index Zero-based task index.
      */
-    public void mark(int index) {
-        if (index >= 0 && index < this.taskList.size()) {
+    public String mark(int index) {
+        if (index >= 0 && index < this.getSize()) {
             Task t = this.taskList.get(index);
             t.mark();
-            System.out.println("Nice! I've marked this task as done:\n" + t.toString());
+            return "Nice! I've marked this task as done:\n" + t.toString();
         } else {
-            System.out.println("Invalid task number.");
+            return "Invalid task number.";
         }
     }
 
@@ -69,13 +79,13 @@ public class TaskList {
      *
      * @param index Zero-based task index.
      */
-    public void unmark(int index) {
-        if (index >= 0 && index < this.taskList.size()) {
+    public String unmark(int index) {
+        if (index >= 0 && index < this.getSize()) {
             Task t = this.taskList.get(index);
             t.unmark();
-            System.out.println("OK, I've marked this task as not done yet:\n" + t.toString());
+            return "OK, I've marked this task as not done yet:\n" + t.toString();
         } else {
-            System.out.println("Invalid task number.");
+            return "Invalid task number.";
         }
     }
 
@@ -84,13 +94,13 @@ public class TaskList {
      *
      * @param index Zero-based task index.
      */
-    public void delete(int index) {
-        if (index >= 0 && index < this.taskList.size()) {
+    public String delete(int index) {
+        if (index >= 0 && index < this.getSize()) {
             Task t = this.taskList.remove(index);
-            System.out.println("Noted. I've removed this task:\n" + t.toString());
-            System.out.println("Now you have " + this.taskList.size() + " tasks in the list.");
+            return "Noted. I've removed this task:\n" + t.toString()
+                    + "\nNow you have " + this.getSize() + " tasks in the list.";
         } else {
-            System.out.println("Invalid task number.");
+            return "Invalid task number.";
         }
     }
 
@@ -99,7 +109,7 @@ public class TaskList {
      *
      * @param keyword Keyword to search for in task descriptions.
      */
-    public void find(String keyword) {
+    public String find(String keyword) {
         ArrayList<Task> foundTasks = new ArrayList<>();
         for (Task t : this.taskList) {
             if (t.isInDescription(keyword)) {
@@ -107,12 +117,13 @@ public class TaskList {
             }
         }
         if (foundTasks.isEmpty()) {
-            System.out.println("No matching tasks found.");
+            return "No matching tasks found.";
         } else {
-            System.out.println("Here are the matching tasks in your list:");
+            StringBuilder sb = new StringBuilder("Here are the matching tasks in your list:");
             for (int i = 0; i < foundTasks.size(); i++) {
-                System.out.println((i + 1) + ". " + foundTasks.get(i).toString());
+                sb.append("\n").append(i + 1).append(". ").append(foundTasks.get(i).toString());
             }
+            return sb.toString();
         }
     }
 

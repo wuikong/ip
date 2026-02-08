@@ -1,4 +1,4 @@
-package catbot;
+package catbot.task;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeParseException;

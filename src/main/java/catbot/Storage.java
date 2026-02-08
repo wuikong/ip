@@ -4,8 +4,9 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Scanner;
+
+import catbot.task.Task;
 
 /**
  * Handles loading and saving tasks to persistent storage.
@@ -28,46 +29,16 @@ public class Storage {
      * @return List of tasks loaded from storage.
      * @throws FileNotFoundException If the data file cannot be found.
      */
-    public ArrayList<Task> loadTasks() throws FileNotFoundException {
-        ArrayList<Task> taskList = new ArrayList<>();
+    public TaskList loadTasks(Parser parser) throws FileNotFoundException {
+        TaskList taskList = new TaskList();
         Scanner sc = new Scanner(new File(this.filePath));
         while (sc.hasNextLine()) {
             String line = sc.nextLine();
-            String[] parts = line.split(" \\| ");
-            if (parts.length < 3) {
-                System.out.println("Malformed line in data file: " + line);
-                continue;
-            }
-            String type = parts[0];
-            boolean isDone = parts[1].equals("1");
-            String description = parts[2];
-            Task t = null;
-            switch (type) {
-            case "T":
-                t = new Todo(description);
-                break;
-            case "D":
-                if (parts.length < 4) {
-                    System.out.println("Malformed deadline in data file: " + line);
-                    break;
-                }
-                t = new Deadline(description, parts[3]);
-                break;
-            case "E":
-                if (parts.length < 5) {
-                    System.out.println("Malformed event in data file: " + line);
-                    break;
-                }
-                t = new Event(description, parts[3], parts[4]);
-                break;
-            default:
-                System.out.println("Unknown task type in data file: " + type);
-            }
-            if (t != null) {
-                if (isDone) {
-                    t.mark();
-                }
-                taskList.add(t);
+            try {
+                Task t = parser.parseDataFileTask(line);
+                taskList.addTask(t);
+            } catch (CatbotException e) {
+                System.out.println("Error parsing task from data file: " + e.getMessage());
             }
         }
         sc.close();
