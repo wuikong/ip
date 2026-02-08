@@ -49,7 +49,7 @@ java {
 }
 
 application {
-    mainClass.set("catbot.Catbot")
+    mainClass.set("catbot.Launcher")
 }
 
 checkstyle {
