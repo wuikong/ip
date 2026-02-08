@@ -2,7 +2,6 @@ package catbot;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Scanner;
 
 import catbot.task.Deadline;
@@ -46,14 +45,14 @@ public class Catbot {
      */
     public void initialize() {
         try {
-            this.taskList = new TaskList(this.storage.loadTasks());
+            this.taskList = this.storage.loadTasks(this.parser);
         } catch (FileNotFoundException e) {
-            // File not found, start with empty task list
+            this.taskList = new TaskList();
         } catch (Exception e) {
-            this.ui.showLoadError();
+            System.out.println(this.ui.showLoadError());
             this.taskList = new TaskList();
         }
-        this.ui.showWelcome();
+        System.out.println(this.ui.showWelcome());
     }
 
     /**
@@ -62,9 +61,10 @@ public class Catbot {
      * @param description Task description.
      * @throws CatbotException If the task cannot be created.
      */
-    public void todo(String description) throws CatbotException {
+    public String addTodo(String description) throws CatbotException {
         Task t = new Todo(description);
         taskList.addTask(t);
+        return ui.showAddedTask(t, taskList);
     }
 
     /**
@@ -73,9 +73,10 @@ public class Catbot {
      * @param description Task description.
      * @param by          Due date input.
      */
-    public void deadline(String description, String by) {
+    public String addDeadline(String description, String by) {
         Task t = new Deadline(description, by);
         taskList.addTask(t);
+        return ui.showAddedTask(t, taskList);
     }
 
     /**
@@ -85,15 +86,14 @@ public class Catbot {
      * @param from        Start date input.
      * @param to          End date input.
      */
-    public void event(String description, String from, String to) {
+    public String addEvent(String description, String from, String to) {
         Task t = new Event(description, from, to);
         taskList.addTask(t);
+        return ui.showAddedTask(t, taskList);
     }
 
     /**
      * Starts the Catbot command loop.
-     *
-     * @param args Command-line arguments.
      */
     public static void main(String[] args) {
         Catbot catbot = new Catbot();
@@ -102,55 +102,90 @@ public class Catbot {
         while (true) {
             try {
                 input = catbot.sc.nextLine();
-                ArrayList<String> tokens = catbot.parser.parseInput(input);
-                Command cmd = Command.valueOf(tokens.get(0));
+                Command tokens = catbot.parser.parseCommand(input);
+                CommandEnum cmd = tokens.getCommandEnum();
                 switch (cmd) {
                 case TODO:
-                    catbot.todo(tokens.get(1));
+                    System.out.println(catbot.addTodo(tokens.getArgs().get(0)));
                     break;
                 case DEADLINE:
-                    catbot.deadline(tokens.get(1), tokens.get(2));
+                    System.out.println(catbot.addDeadline(tokens.getArgs().get(0), tokens.getArgs().get(1)));
                     break;
                 case EVENT:
-                    catbot.event(tokens.get(1), tokens.get(2), tokens.get(3));
+                    System.out.println(catbot.addEvent(tokens.getArgs().get(0), tokens.getArgs().get(1), tokens.getArgs().get(2)));
                     break;
                 case LIST:
-                    catbot.taskList.list();
+                    System.out.println(catbot.taskList.list());
                     break;
                 case MARK:
-                    catbot.taskList.mark(Integer.parseInt(tokens.get(1)) - 1);
+                    System.out.println(catbot.taskList.mark(tokens.getTaskIndex() - 1));
                     break;
                 case UNMARK:
-                    catbot.taskList.unmark(Integer.parseInt(tokens.get(1)) - 1);
+                    System.out.println(catbot.taskList.unmark(tokens.getTaskIndex() - 1));
                     break;
                 case DELETE:
-                    catbot.taskList.delete(Integer.parseInt(tokens.get(1)) - 1);
+                    System.out.println(catbot.taskList.delete(tokens.getTaskIndex() - 1));
                     break;
                 case FIND:
-                    catbot.taskList.find(tokens.get(1));
+                    System.out.println(catbot.taskList.find(tokens.getArgs().get(0)));
                     break;
                 case BYE:
                     try {
                         catbot.storage.saveTasks(catbot.taskList);
                     } catch (IOException e) {
-                        catbot.ui.showSaveError(catbot.taskList.toString());
+                        System.out.println(catbot.ui.showSaveError(catbot.taskList));
                     }
-                    catbot.ui.showGoodbye();
+                    System.out.println(catbot.ui.showGoodbye());
                     catbot.sc.close();
                     return;
                 default:
                     throw new CatbotException("I'm sorry, I don't understand that command.");
                 }
             } catch (CatbotException e) {
-                catbot.ui.showError(e.getMessage());
+                System.out.println(catbot.ui.showError(e.getMessage()));
             }
         }
     }
 
     /**
      * Generates a response for the user's chat message.
+     * 
+     * @param input User input string.
+     * @return Response string from Catbot.
      */
     public String getResponse(String input) {
-        return "Catbot heard: " + input;
+        try {
+            Command tokens = this.parser.parseCommand(input);
+            CommandEnum cmd = tokens.getCommandEnum();
+            switch (cmd) {
+            case TODO:
+                return this.addTodo(tokens.getArgs().get(0));
+            case DEADLINE:
+                return this.addDeadline(tokens.getArgs().get(0), tokens.getArgs().get(1));
+            case EVENT:
+                return this.addEvent(tokens.getArgs().get(0), tokens.getArgs().get(1), tokens.getArgs().get(2));
+            case LIST:
+                return this.taskList.list();
+            case MARK:
+                return this.taskList.mark(tokens.getTaskIndex() - 1);
+            case UNMARK:
+                return this.taskList.unmark(tokens.getTaskIndex() - 1);
+            case DELETE:
+                return this.taskList.delete(tokens.getTaskIndex() - 1);
+            case FIND:
+                return this.taskList.find(tokens.getArgs().get(0));
+            case BYE:
+                try {
+                    this.storage.saveTasks(this.taskList);
+                } catch (IOException e) {
+                    return this.ui.showSaveError(this.taskList);
+                }
+                return this.ui.showGoodbye();
+            default:
+                throw new CatbotException("I'm sorry, I don't understand that command.");
+            }
+        } catch (CatbotException e) {
+            return this.ui.showError(e.getMessage());
+        }
     }
 }

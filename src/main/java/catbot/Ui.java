@@ -1,5 +1,7 @@
 package catbot;
 
+import catbot.task.Task;
+
 /**
  * Handles user-facing messages.
  */
@@ -7,22 +9,33 @@ public class Ui {
     /**
      * Shows the welcome message.
      */
-    public void showWelcome() {
-        System.out.println("Hello! I'm Catbot\nWhat can I do for you?");
+    public String showWelcome() {
+        return "Hello! I'm Catbot 😸\nWhat can I do for you?";
     }
 
     /**
      * Shows the goodbye message.
      */
-    public void showGoodbye() {
-        System.out.println("Bye. Hope to see you again soon!");
+    public String showGoodbye() {
+        return "Bye. Hope to see you again soon! 😸";
+    }
+
+    /**
+     * Shows a message when a task is added.
+     *
+     * @param task     The task that was added.
+     * @param taskList The current task list.
+     */
+    public String showAddedTask(Task task, TaskList taskList) {
+        return "Got it. I've added this task:\n" + task.toString()
+                + "\nNow you have " + taskList.getSize() + " tasks in the list.";
     }
 
     /**
      * Shows an error when loading tasks fails.
      */
-    public void showLoadError() {
-        System.out.println("Could not load tasks from file. Starting with an empty task list.");
+    public String showLoadError() {
+        return "Could not load tasks from file. Starting with an empty task list.";
     }
 
     /**
@@ -30,9 +43,8 @@ public class Ui {
      *
      * @param tasks Current tasks to display.
      */
-    public void showSaveError(String tasks) {
-        System.out.println("Could not save tasks to file. Please save your tasks manually.");
-        System.out.println(tasks);
+    public String showSaveError(TaskList tasks) {
+        return "Could not save tasks to file. Please save your tasks manually.\n" + tasks.toString();
     }
 
     /**
@@ -40,7 +52,7 @@ public class Ui {
      *
      * @param message Error message to display.
      */
-    public void showError(String message) {
-        System.out.println(message);
+    public String showError(String message) {
+        return message;
     }
 }
