@@ -15,6 +15,14 @@ import catbot.task.Todo;
  * Parses user input into command tokens.
  */
 public class Parser {
+    private static final String TODO_ERROR_MSG = "The description of a todo cannot be empty.";
+    private static final String DEADLINE_ERROR_MSG = "Invalid deadline format. Use: deadline <description> /by <"
+            + DateTimeUtil.INPUT_PATTERN + ">";
+    private static final String EVENT_ERROR_MSG = "Invalid event format. Use: event <description> /from <"
+            + DateTimeUtil.INPUT_PATTERN + "> /to <" + DateTimeUtil.INPUT_PATTERN + ">";
+    private static final String TASK_IDX_ERROR_MSG = "Please provide a valid task number.";
+    private static final String FIND_ERROR_MSG = "Please provide a keyword to search for.";
+
     /**
      * Parse command from user input.
      *
@@ -29,41 +37,31 @@ public class Parser {
         switch (cmdIdx) {
         case TODO:
             if (tokens.length < 2 || tokens[1].trim().isEmpty()) {
-                throw new CatbotException("The description of a todo cannot be empty.");
+                throw new CatbotException(TODO_ERROR_MSG);
             }
             cmd = new Command(cmdIdx, new ArrayList<>(Arrays.asList(tokens[1])));
             break;
 
         case DEADLINE:
             if (tokens.length < 2 || tokens[1].trim().isEmpty()) {
-                throw new CatbotException(
-                        "Invalid deadline format. Use: deadline <description> /by <"
-                        + DateTimeUtil.INPUT_PATTERN + ">");
+                throw new CatbotException(DEADLINE_ERROR_MSG);
             }
             tokens = tokens[1].split(" /by ");
             if (tokens.length != 2) {
-                throw new CatbotException(
-                        "Invalid deadline format. Use: deadline <description> /by <"
-                        + DateTimeUtil.INPUT_PATTERN + ">");
+                throw new CatbotException(DEADLINE_ERROR_MSG);
             }
             cmd = new Command(cmdIdx, new ArrayList<>(Arrays.asList(tokens)));
             break;
 
         case EVENT:
             if (tokens.length < 2 || tokens[1].trim().isEmpty()) {
-                throw new CatbotException(
-                        "Invalid event format. Use: event <description> /from <"
-                        + DateTimeUtil.INPUT_PATTERN + "> /to <" + DateTimeUtil.INPUT_PATTERN
-                        + ">");
+                throw new CatbotException(EVENT_ERROR_MSG);
             }
             String eventInput = tokens[1];
             int fromIdx = eventInput.indexOf(" /from ");
             int toIdx = eventInput.indexOf(" /to ");
             if (fromIdx == -1 || toIdx == -1) {
-                throw new CatbotException(
-                        "Invalid event format. Use: event <description> /from <"
-                        + DateTimeUtil.INPUT_PATTERN + "> /to <" + DateTimeUtil.INPUT_PATTERN
-                        + ">");
+                throw new CatbotException(EVENT_ERROR_MSG);
             }
             String description;
             String from;
@@ -86,18 +84,18 @@ public class Parser {
         case UNMARK:
         case DELETE:
             if (tokens.length < 2 || tokens[1].trim().isEmpty()) {
-                throw new CatbotException("Please provide a valid task number.");
+                throw new CatbotException(TASK_IDX_ERROR_MSG);
             }
             try {
                 cmd = new Command(cmdIdx, Integer.parseInt(tokens[1]));
             } catch (NumberFormatException e) {
-                throw new CatbotException("Please provide a valid task number.");
+                throw new CatbotException(TASK_IDX_ERROR_MSG);
             }
             break;
 
         case FIND:
             if (tokens.length < 2 || tokens[1].trim().isEmpty()) {
-                throw new CatbotException("Please provide a keyword to search for.");
+                throw new CatbotException(FIND_ERROR_MSG);
             }
             cmd = new Command(cmdIdx, new ArrayList<>(Arrays.asList(tokens[1])));
             break;
