@@ -3,6 +3,8 @@ package catbot;
 import java.util.ArrayList;
 import java.util.Arrays;
 
+import catbot.command.Command;
+import catbot.command.CommandEnum;
 import catbot.task.DateTimeUtil;
 import catbot.task.Deadline;
 import catbot.task.Event;

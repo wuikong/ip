@@ -1,4 +1,4 @@
-package catbot;
+package catbot.command;
 
 import java.util.ArrayList;
 

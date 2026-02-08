@@ -1,4 +1,4 @@
-package catbot;
+package catbot.command;
 
 /**
  * Supported command keywords for Catbot.

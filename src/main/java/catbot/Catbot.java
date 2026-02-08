@@ -4,6 +4,8 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Scanner;
 
+import catbot.command.Command;
+import catbot.command.CommandEnum;
 import catbot.task.Deadline;
 import catbot.task.Event;
 import catbot.task.Task;
