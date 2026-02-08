@@ -63,7 +63,8 @@ public class ParserTest {
     public void parse_deadlineMissingBy_throwsCatbotException() {
         Parser parser = new Parser();
 
-        CatbotException error = assertThrows(CatbotException.class, () -> parser.parseCommand("deadline submit report"));
+        CatbotException error = assertThrows(
+                CatbotException.class, () -> parser.parseCommand("deadline submit report"));
 
         assertEquals(
                 "Invalid deadline format. Use: deadline <description> /by <" + DateTimeUtil.INPUT_PATTERN + ">",
@@ -74,7 +75,8 @@ public class ParserTest {
     public void parse_markWithNonNumericIndex_throwsCatbotException() {
         Parser parser = new Parser();
 
-        CatbotException error = assertThrows(CatbotException.class, () -> parser.parseCommand("mark two"));
+        CatbotException error = assertThrows(
+                CatbotException.class, () -> parser.parseCommand("mark two"));
 
         assertEquals("Please provide a valid task number.", error.getMessage());
     }

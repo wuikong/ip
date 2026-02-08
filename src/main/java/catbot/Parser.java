@@ -100,8 +100,13 @@ public class Parser {
             cmd = new Command(cmdIdx, new ArrayList<>(Arrays.asList(tokens[1])));
             break;
 
-        default:
+        case BYE:
+        case LIST:
             cmd = new Command(cmdIdx);
+            break;
+
+        default:
+            throw new CatbotException("I'm sorry, I don't understand that command.");
         }
         return cmd;
     }

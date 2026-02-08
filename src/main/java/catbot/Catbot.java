@@ -2,6 +2,7 @@ package catbot;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Scanner;
 
 import catbot.command.Command;
@@ -106,15 +107,16 @@ public class Catbot {
                 input = catbot.sc.nextLine();
                 Command tokens = catbot.parser.parseCommand(input);
                 CommandEnum cmd = tokens.getCommandEnum();
+                ArrayList<String> argsList = tokens.getArgs();
                 switch (cmd) {
                 case TODO:
-                    System.out.println(catbot.addTodo(tokens.getArgs().get(0)));
+                    System.out.println(catbot.addTodo(argsList.get(0)));
                     break;
                 case DEADLINE:
-                    System.out.println(catbot.addDeadline(tokens.getArgs().get(0), tokens.getArgs().get(1)));
+                    System.out.println(catbot.addDeadline(argsList.get(0), argsList.get(1)));
                     break;
                 case EVENT:
-                    System.out.println(catbot.addEvent(tokens.getArgs().get(0), tokens.getArgs().get(1), tokens.getArgs().get(2)));
+                    System.out.println(catbot.addEvent(argsList.get(0), argsList.get(1), argsList.get(2)));
                     break;
                 case LIST:
                     System.out.println(catbot.taskList.list());
@@ -129,7 +131,7 @@ public class Catbot {
                     System.out.println(catbot.taskList.delete(tokens.getTaskIndex() - 1));
                     break;
                 case FIND:
-                    System.out.println(catbot.taskList.find(tokens.getArgs().get(0)));
+                    System.out.println(catbot.taskList.find(argsList.get(0)));
                     break;
                 case BYE:
                     try {
@@ -151,7 +153,7 @@ public class Catbot {
 
     /**
      * Generates a response for the user's chat message.
-     * 
+     *
      * @param input User input string.
      * @return Response string from Catbot.
      */
@@ -159,13 +161,14 @@ public class Catbot {
         try {
             Command tokens = this.parser.parseCommand(input);
             CommandEnum cmd = tokens.getCommandEnum();
+            ArrayList<String> argsList = tokens.getArgs();
             switch (cmd) {
             case TODO:
-                return this.addTodo(tokens.getArgs().get(0));
+                return this.addTodo(argsList.get(0));
             case DEADLINE:
-                return this.addDeadline(tokens.getArgs().get(0), tokens.getArgs().get(1));
+                return this.addDeadline(argsList.get(0), argsList.get(1));
             case EVENT:
-                return this.addEvent(tokens.getArgs().get(0), tokens.getArgs().get(1), tokens.getArgs().get(2));
+                return this.addEvent(argsList.get(0), argsList.get(1), argsList.get(2));
             case LIST:
                 return this.taskList.list();
             case MARK:
@@ -175,7 +178,7 @@ public class Catbot {
             case DELETE:
                 return this.taskList.delete(tokens.getTaskIndex() - 1);
             case FIND:
-                return this.taskList.find(tokens.getArgs().get(0));
+                return this.taskList.find(argsList.get(0));
             case BYE:
                 try {
                     this.storage.saveTasks(this.taskList);
