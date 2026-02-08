@@ -6,6 +6,7 @@ import java.time.LocalDateTime;
 
 import org.junit.jupiter.api.Test;
 
+import catbot.task.DateTimeUtil;
 import catbot.task.Deadline;
 
 public class DeadlineTest {

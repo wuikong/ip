@@ -1,4 +1,4 @@
-package catbot;
+package catbot.task;
 
 import java.time.format.DateTimeFormatter;
 
