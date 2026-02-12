@@ -55,14 +55,13 @@ public class TaskList {
     public String list() {
         if (this.taskList.isEmpty()) {
             return "No tasks in the list.";
-        } else {
-            return "Here are the tasks in your list:"
-                    + Stream.iterate(0, n -> n + 1)
-                    .limit(this.taskList.size())
-                    .reduce("", (acc, i) ->
-                            acc + "\n" + (i + 1) + ". "
-                            + this.taskList.get(i).toString(), String::concat)
         }
+        return "Here are the tasks in your list:"
+                + Stream.iterate(0, n -> n + 1)
+                .limit(this.taskList.size())
+                .reduce("", (acc, i) ->
+                        acc + "\n" + (i + 1) + ". "
+                        + this.taskList.get(i).toString(), String::concat);
     }
 
     /**
