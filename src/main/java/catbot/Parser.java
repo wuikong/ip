@@ -24,6 +24,112 @@ public class Parser {
     private static final String FIND_ERROR_MSG = "Please provide a keyword to search for.";
 
     /**
+     * Parse todo command from user input.
+     *
+     * @param input User input string.
+     * @return Command instance for todo.
+     * @throws CatbotException If the input is invalid.
+     */
+    public Command parseTodoInput(String input) throws CatbotException {
+        String description = input.substring("todo ".length()).trim();
+        if (description.isEmpty()) {
+            throw new CatbotException(TODO_ERROR_MSG);
+        }
+        return new Command(CommandEnum.TODO, new ArrayList<>(Arrays.asList(description)));
+    }
+
+    /**
+     * Parse deadline command from user input.
+     *
+     * @param input User input string.
+     * @return Command instance for deadline.
+     * @throws CatbotException If the input is invalid.
+     */
+    public Command parseDeadlineInput(String input) throws CatbotException {
+        String[] tokens = input.split(" /by ");
+        if (tokens.length != 2) {
+            throw new CatbotException(DEADLINE_ERROR_MSG);
+        }
+        String description = tokens[0].substring("deadline ".length()).trim();
+        String by = tokens[1].trim();
+        if (description.isEmpty() || by.isEmpty()) {
+            throw new CatbotException(DEADLINE_ERROR_MSG);
+        }
+        return new Command(CommandEnum.DEADLINE, new ArrayList<>(Arrays.asList(description, by)));
+    }
+
+    /**
+     * Parse event command from user input.
+     *
+     * @param input User input string.
+     * @return Command instance for event.
+     * @throws CatbotException If the input is invalid.
+     */
+    public Command parseEventInput(String input) throws CatbotException {
+        String cmdKeyword = "event ";
+        String fromFlag = " /from ";
+        String toFlag = " /to ";
+
+        int fromIdx = input.indexOf(fromFlag);
+        int toIdx = input.indexOf(toFlag);
+        if (fromIdx == -1 || toIdx == -1) {
+            throw new CatbotException(EVENT_ERROR_MSG);
+        }
+
+        String description;
+        String from;
+        String to;
+        if (fromIdx < toIdx) {
+            // Order is: description /from from /to to
+            description = input.substring(cmdKeyword.length(), fromIdx).trim();
+            from = input.substring(fromIdx + fromFlag.length(), toIdx).trim();
+            to = input.substring(toIdx + toFlag.length()).trim();
+        } else {
+            // Order is: description /to to /from from
+            description = input.substring(cmdKeyword.length(), toIdx).trim();
+            to = input.substring(toIdx + toFlag.length(), fromIdx).trim();
+            from = input.substring(fromIdx + fromFlag.length()).trim();
+        }
+
+        if (description.isEmpty() || from.isEmpty() || to.isEmpty()) {
+            throw new CatbotException(EVENT_ERROR_MSG);
+        }
+        return new Command(CommandEnum.EVENT, new ArrayList<>(Arrays.asList(description, from, to)));
+    }
+
+    /**
+     * Parse commands that require a numeric task index.
+     *
+     * @param cmdIdx CommandEnum value.
+     * @param input  User input string.
+     * @return Command instance.
+     * @throws CatbotException If the input is invalid.
+     */
+    public Command parseNumericInput(CommandEnum cmdIdx, String input) throws CatbotException {
+        int cmdIdxLength = cmdIdx.name().length();
+        try {
+            return new Command(cmdIdx, Integer.parseInt(input.substring(cmdIdxLength).trim()));
+        } catch (NumberFormatException e) {
+            throw new CatbotException(TASK_IDX_ERROR_MSG);
+        }
+    }
+
+    /**
+     * Parse find command from user input.
+     *
+     * @param input User input string.
+     * @return Command instance for find.
+     * @throws CatbotException If the input is invalid.
+     */
+    public Command parseFindInput(String input) throws CatbotException {
+        String target = input.substring("find ".length());
+        if (target.isEmpty()) {
+            throw new CatbotException(FIND_ERROR_MSG);
+        }
+        return new Command(CommandEnum.FIND, new ArrayList<>(Arrays.asList(target)));
+    }
+
+    /**
      * Parse command from user input.
      *
      * @param input User input string.
@@ -32,72 +138,22 @@ public class Parser {
      */
     public Command parseCommand(String input) throws CatbotException {
         CommandEnum cmdIdx = CommandEnum.getCommandEnum(input);
-        String[] tokens = input.split(" ", 2);
         switch (cmdIdx) {
         case TODO:
-            if (tokens.length < 2 || tokens[1].trim().isEmpty()) {
-                throw new CatbotException(TODO_ERROR_MSG);
-            }
-            return new Command(cmdIdx, new ArrayList<>(Arrays.asList(tokens[1])));
-
+            return this.parseTodoInput(input);
         case DEADLINE:
-            if (tokens.length < 2 || tokens[1].trim().isEmpty()) {
-                throw new CatbotException(DEADLINE_ERROR_MSG);
-            }
-            tokens = tokens[1].split(" /by ");
-            if (tokens.length != 2) {
-                throw new CatbotException(DEADLINE_ERROR_MSG);
-            }
-            return new Command(cmdIdx, new ArrayList<>(Arrays.asList(tokens)));
-
+            return this.parseDeadlineInput(input);
         case EVENT:
-            if (tokens.length < 2 || tokens[1].trim().isEmpty()) {
-                throw new CatbotException(EVENT_ERROR_MSG);
-            }
-            String eventInput = tokens[1];
-            int fromIdx = eventInput.indexOf(" /from ");
-            int toIdx = eventInput.indexOf(" /to ");
-            if (fromIdx == -1 || toIdx == -1) {
-                throw new CatbotException(EVENT_ERROR_MSG);
-            }
-            String description;
-            String from;
-            String to;
-            if (fromIdx < toIdx) {
-                // Order is: description /from from /to to
-                description = eventInput.substring(0, fromIdx).trim();
-                from = eventInput.substring(fromIdx + 7, toIdx).trim();
-                to = eventInput.substring(toIdx + 5).trim();
-            } else {
-                // Order is: description /to to /from from
-                description = eventInput.substring(0, toIdx).trim();
-                to = eventInput.substring(toIdx + 5, fromIdx).trim();
-                from = eventInput.substring(fromIdx + 7).trim();
-            }
-            return new Command(cmdIdx, new ArrayList<>(Arrays.asList(description, from, to)));
-
-        case MARK:
-        case UNMARK:
+            return this.parseEventInput(input);
+        case MARK: // fallthrough
+        case UNMARK: // fallthrough
         case DELETE:
-            if (tokens.length < 2 || tokens[1].trim().isEmpty()) {
-                throw new CatbotException(TASK_IDX_ERROR_MSG);
-            }
-            try {
-                return new Command(cmdIdx, Integer.parseInt(tokens[1]));
-            } catch (NumberFormatException e) {
-                throw new CatbotException(TASK_IDX_ERROR_MSG);
-            }
-
+            return this.parseNumericInput(cmdIdx, input);
         case FIND:
-            if (tokens.length < 2 || tokens[1].trim().isEmpty()) {
-                throw new CatbotException(FIND_ERROR_MSG);
-            }
-            return new Command(cmdIdx, new ArrayList<>(Arrays.asList(tokens[1])));
-
-        case BYE:
+            return this.parseFindInput(input);
+        case BYE: // fallthrough
         case LIST:
             return new Command(cmdIdx);
-
         default:
             throw new CatbotException("I'm sorry, I don't understand that command.");
         }
@@ -139,6 +195,7 @@ public class Parser {
         default:
             throw new CatbotException("Unknown task type in data file: " + type);
         }
+
         if (isDone) {
             t.mark();
         }

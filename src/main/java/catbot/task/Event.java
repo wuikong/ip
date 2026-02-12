@@ -23,11 +23,13 @@ public class Event extends Task {
         super(description);
         this.from = from;
         this.to = to;
+
         try {
             this.fromDateTime = LocalDateTime.parse(from, DateTimeUtil.INPUT_FORMAT);
         } catch (DateTimeParseException e) {
             this.fromDateTime = null;
         }
+
         try {
             this.toDateTime = LocalDateTime.parse(to, DateTimeUtil.INPUT_FORMAT);
         } catch (DateTimeParseException e) {
@@ -41,10 +43,12 @@ public class Event extends Task {
         if (fromDateTime != null) {
             fromOutput = fromDateTime.format(DateTimeUtil.OUTPUT_FORMAT);
         }
+
         String toOutput = to;
         if (toDateTime != null) {
             toOutput = toDateTime.format(DateTimeUtil.OUTPUT_FORMAT);
         }
+
         return "[E]" + super.toString() + " (from: " + fromOutput + " to: " + toOutput + ")";
     }
 
