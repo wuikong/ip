@@ -32,15 +32,13 @@ public class Parser {
      */
     public Command parseCommand(String input) throws CatbotException {
         CommandEnum cmdIdx = CommandEnum.getCommandEnum(input);
-        Command cmd;
         String[] tokens = input.split(" ", 2);
         switch (cmdIdx) {
         case TODO:
             if (tokens.length < 2 || tokens[1].trim().isEmpty()) {
                 throw new CatbotException(TODO_ERROR_MSG);
             }
-            cmd = new Command(cmdIdx, new ArrayList<>(Arrays.asList(tokens[1])));
-            break;
+            return new Command(cmdIdx, new ArrayList<>(Arrays.asList(tokens[1])));
 
         case DEADLINE:
             if (tokens.length < 2 || tokens[1].trim().isEmpty()) {
@@ -50,8 +48,7 @@ public class Parser {
             if (tokens.length != 2) {
                 throw new CatbotException(DEADLINE_ERROR_MSG);
             }
-            cmd = new Command(cmdIdx, new ArrayList<>(Arrays.asList(tokens)));
-            break;
+            return new Command(cmdIdx, new ArrayList<>(Arrays.asList(tokens)));
 
         case EVENT:
             if (tokens.length < 2 || tokens[1].trim().isEmpty()) {
@@ -77,8 +74,7 @@ public class Parser {
                 to = eventInput.substring(toIdx + 5, fromIdx).trim();
                 from = eventInput.substring(fromIdx + 7).trim();
             }
-            cmd = new Command(cmdIdx, new ArrayList<>(Arrays.asList(description, from, to)));
-            break;
+            return new Command(cmdIdx, new ArrayList<>(Arrays.asList(description, from, to)));
 
         case MARK:
         case UNMARK:
@@ -87,28 +83,24 @@ public class Parser {
                 throw new CatbotException(TASK_IDX_ERROR_MSG);
             }
             try {
-                cmd = new Command(cmdIdx, Integer.parseInt(tokens[1]));
+                return new Command(cmdIdx, Integer.parseInt(tokens[1]));
             } catch (NumberFormatException e) {
                 throw new CatbotException(TASK_IDX_ERROR_MSG);
             }
-            break;
 
         case FIND:
             if (tokens.length < 2 || tokens[1].trim().isEmpty()) {
                 throw new CatbotException(FIND_ERROR_MSG);
             }
-            cmd = new Command(cmdIdx, new ArrayList<>(Arrays.asList(tokens[1])));
-            break;
+            return new Command(cmdIdx, new ArrayList<>(Arrays.asList(tokens[1])));
 
         case BYE:
         case LIST:
-            cmd = new Command(cmdIdx);
-            break;
+            return new Command(cmdIdx);
 
         default:
             throw new CatbotException("I'm sorry, I don't understand that command.");
         }
-        return cmd;
     }
 
     /**
@@ -119,6 +111,7 @@ public class Parser {
      * @throws CatbotException If the data line is malformed.
      */
     public Task parseDataFileTask(String dataLine) throws CatbotException {
+        assert dataLine != null : "Data line cannot be null";
         String[] parts = dataLine.split(" \\| ");
         if (parts.length < 3) {
             throw new CatbotException("Malformed line in data file: " + dataLine);
