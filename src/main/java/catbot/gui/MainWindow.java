@@ -44,6 +44,7 @@ public class MainWindow extends AnchorPane {
      */
     @FXML
     private void handleUserInput() {
+        assert catbot != null : "Catbot instance has not been set";
         String input = userInput.getText();
         String response = catbot.getResponse(input);
         dialogContainer.getChildren().addAll(
