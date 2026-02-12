@@ -23,6 +23,7 @@ public class TaskList {
      * @param tasks Initial tasks to store.
      */
     public TaskList(ArrayList<Task> tasks) {
+        assert tasks != null : "Initial task list cannot be null";
         this.taskList = tasks;
     }
 
@@ -41,73 +42,76 @@ public class TaskList {
      * @param t Task to add.
      */
     public void addTask(Task t) {
+        assert t != null : "Task to add cannot be null";
         this.taskList.add(t);
     }
 
     /**
      * Prints all tasks in the list.
+     *
+     * @return Formatted string of all tasks.
      */
     public String list() {
         if (this.taskList.isEmpty()) {
             return "No tasks in the list.";
-        } else {
-            StringBuilder sb = new StringBuilder("Here are the tasks in your list:");
-            for (int i = 0; i < this.getSize(); i++) {
-                sb.append("\n").append(i + 1).append(". ").append(this.taskList.get(i).toString());
-            }
-            return sb.toString();
         }
+        StringBuilder sb = new StringBuilder("Here are the tasks in your list:");
+        for (int i = 0; i < this.getSize(); i++) {
+            sb.append("\n").append(i + 1).append(". ").append(this.taskList.get(i).toString());
+        }
+        return sb.toString();
     }
 
     /**
      * Marks the task at the given index as completed.
      *
      * @param index Zero-based task index.
+     * @return Confirmation message.
      */
     public String mark(int index) {
         if (index >= 0 && index < this.getSize()) {
             Task t = this.taskList.get(index);
             t.mark();
             return "Nice! I've marked this task as done:\n" + t.toString();
-        } else {
-            return "Invalid task number.";
         }
+        return "Invalid task number.";
     }
 
     /**
      * Marks the task at the given index as not completed.
      *
      * @param index Zero-based task index.
+     * @return Confirmation message.
      */
     public String unmark(int index) {
         if (index >= 0 && index < this.getSize()) {
             Task t = this.taskList.get(index);
             t.unmark();
             return "OK, I've marked this task as not done yet:\n" + t.toString();
-        } else {
-            return "Invalid task number.";
         }
+        return "Invalid task number.";
     }
 
     /**
      * Removes the task at the given index.
      *
      * @param index Zero-based task index.
+     * @return Confirmation message.
      */
     public String delete(int index) {
         if (index >= 0 && index < this.getSize()) {
             Task t = this.taskList.remove(index);
             return "Noted. I've removed this task:\n" + t.toString()
                     + "\nNow you have " + this.getSize() + " tasks in the list.";
-        } else {
-            return "Invalid task number.";
         }
+        return "Invalid task number.";
     }
 
     /**
      * Finds and lists tasks that contain the given keyword.
      *
      * @param keyword Keyword to search for in task descriptions.
+     * @return Matching tasks as a formatted string.
      */
     public String find(String keyword) {
         ArrayList<Task> foundTasks = new ArrayList<>();
@@ -118,13 +122,12 @@ public class TaskList {
         }
         if (foundTasks.isEmpty()) {
             return "No matching tasks found.";
-        } else {
-            StringBuilder sb = new StringBuilder("Here are the matching tasks in your list:");
-            for (int i = 0; i < foundTasks.size(); i++) {
-                sb.append("\n").append(i + 1).append(". ").append(foundTasks.get(i).toString());
-            }
-            return sb.toString();
         }
+        StringBuilder sb = new StringBuilder("Here are the matching tasks in your list:");
+        for (int i = 0; i < foundTasks.size(); i++) {
+            sb.append("\n").append(i + 1).append(". ").append(foundTasks.get(i).toString());
+        }
+        return sb.toString();
     }
 
     @Override

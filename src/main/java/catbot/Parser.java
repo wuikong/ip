@@ -167,6 +167,7 @@ public class Parser {
      * @throws CatbotException If the data line is malformed.
      */
     public Task parseDataFileTask(String dataLine) throws CatbotException {
+        assert dataLine != null : "Data line cannot be null";
         String[] parts = dataLine.split(" \\| ");
         if (parts.length < 3) {
             throw new CatbotException("Malformed line in data file: " + dataLine);

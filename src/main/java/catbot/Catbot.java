@@ -133,6 +133,7 @@ public class Catbot {
      * @return Response string from Catbot.
      */
     public String getResponse(String input) {
+        assert this.parser != null : "Catbot must be initialised";
         try {
             Command tokens = this.parser.parseCommand(input);
             CommandEnum cmd = tokens.getCommandEnum();
