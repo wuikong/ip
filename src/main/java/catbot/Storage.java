@@ -20,6 +20,7 @@ public class Storage {
      * @param filePath Path to the data file.
      */
     public Storage(String filePath) {
+        assert filePath != null : "File path cannot be null";
         this.filePath = filePath;
     }
 
@@ -30,6 +31,7 @@ public class Storage {
      * @throws FileNotFoundException If the data file cannot be found.
      */
     public TaskList loadTasks(Parser parser) throws FileNotFoundException {
+        assert parser != null : "Parser cannot be null";
         TaskList taskList = new TaskList();
         Scanner sc = new Scanner(new File(this.filePath));
         while (sc.hasNextLine()) {
@@ -52,6 +54,7 @@ public class Storage {
      * @throws IOException If an IO error occurs while saving.
      */
     public void saveTasks(TaskList taskList) throws IOException {
+        assert taskList != null : "Task list cannot be null";
         File file = new File(this.filePath);
         File parentDir = file.getParentFile();
         if (parentDir != null) {
