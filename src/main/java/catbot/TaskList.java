@@ -1,6 +1,7 @@
 package catbot;
 
 import java.util.ArrayList;
+import java.util.stream.Stream;
 
 import catbot.task.Task;
 
@@ -55,11 +56,12 @@ public class TaskList {
         if (this.taskList.isEmpty()) {
             return "No tasks in the list.";
         }
-        StringBuilder sb = new StringBuilder("Here are the tasks in your list:");
-        for (int i = 0; i < this.getSize(); i++) {
-            sb.append("\n").append(i + 1).append(". ").append(this.taskList.get(i).toString());
-        }
-        return sb.toString();
+        return "Here are the tasks in your list:"
+                + Stream.iterate(0, n -> n + 1)
+                .limit(this.taskList.size())
+                .reduce("", (acc, i) ->
+                        acc + "\n" + (i + 1) + ". "
+                        + this.taskList.get(i).toString(), String::concat);
     }
 
     /**
@@ -114,20 +116,17 @@ public class TaskList {
      * @return Matching tasks as a formatted string.
      */
     public String find(String keyword) {
-        ArrayList<Task> foundTasks = new ArrayList<>();
-        for (Task t : this.taskList) {
-            if (t.isInDescription(keyword)) {
-                foundTasks.add(t);
-            }
-        }
+        String foundTasks = Stream.iterate(0, n -> n + 1)
+                .limit(this.taskList.size())
+                .filter(i -> this.taskList.get(i).isInDescription(keyword))
+                .reduce("", (acc, i) ->
+                        acc + "\n" + (i + 1) + ". "
+                        + this.taskList.get(i).toString(),
+                        String::concat);
         if (foundTasks.isEmpty()) {
             return "No matching tasks found.";
         }
-        StringBuilder sb = new StringBuilder("Here are the matching tasks in your list:");
-        for (int i = 0; i < foundTasks.size(); i++) {
-            sb.append("\n").append(i + 1).append(". ").append(foundTasks.get(i).toString());
-        }
-        return sb.toString();
+        return "Here are the matching tasks in your list:" + foundTasks;
     }
 
     @Override
