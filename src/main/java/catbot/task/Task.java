@@ -34,8 +34,8 @@ public class Task {
     /**
      * Checks if the keyword is in the description of the task.
      *
-     * @param keyword
-     * @return true if the keyword is in the description, false otherwise
+     * @param keyword Keyword to search for.
+     * @return true if the keyword is in the description, false otherwise.
      */
     public boolean isInDescription(String keyword) {
         return this.description.contains(keyword);
