@@ -16,9 +16,7 @@ public class Command {
      * @param commandEnum Command type.
      */
     public Command(CommandEnum commandEnum) {
-        this.commandEnum = commandEnum;
-        this.args = new ArrayList<>();
-        this.taskIndex = -1;
+        this(commandEnum, new ArrayList<>(), -1);
     }
 
     /**
@@ -28,8 +26,7 @@ public class Command {
      * @param args        Command arguments.
      */
     public Command(CommandEnum commandEnum, ArrayList<String> args) {
-        this(commandEnum);
-        this.args = args;
+        this(commandEnum, args, -1);
     }
 
     /**
@@ -39,7 +36,19 @@ public class Command {
      * @param taskIndex   Task index argument.
      */
     public Command(CommandEnum commandEnum, int taskIndex) {
-        this(commandEnum);
+        this(commandEnum, new ArrayList<>(), taskIndex);
+    }
+
+    /**
+     * Creates a Command instance with arguments and a task index.
+     *
+     * @param commandEnum Command type.
+     * @param args        Command arguments.
+     * @param taskIndex   Task index argument.
+     */
+    public Command(CommandEnum commandEnum, ArrayList<String> args, int taskIndex) {
+        this.commandEnum = commandEnum;
+        this.args = args;
         this.taskIndex = taskIndex;
     }
 
