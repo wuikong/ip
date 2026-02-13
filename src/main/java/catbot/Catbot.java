@@ -60,40 +60,55 @@ public class Catbot {
     }
 
     /**
-     * Adds a todo task.
+     * Creates a task based on a task command.
      *
-     * @param description Task description.
-     * @throws CatbotException If the task cannot be created.
+     * @param cmd Command containing task details.
+     * @return Task instance created from the command.
+     * @throws CatbotException If the command is invalid for task creation.
      */
-    public String addTodo(String description) throws CatbotException {
-        Task t = new Todo(description);
+    public Task makeTask(Command cmd) throws CatbotException {
+        switch (cmd.getCommandEnum()) {
+        case TODO:
+            return new Todo(cmd.getArgs().get(0));
+        case DEADLINE:
+            return new Deadline(cmd.getArgs().get(0), cmd.getArgs().get(1));
+        case EVENT:
+            return new Event(cmd.getArgs().get(0),
+                    cmd.getArgs().get(1),
+                    cmd.getArgs().get(2));
+        default:
+            throw new CatbotException("Invalid task command.");
+        }
+    }
+
+    /**
+     * Adds a task to the task list.
+     *
+     * @param t Task to add.
+     * @return Confirmation message.
+     */
+    public String addTask(Task t) {
         taskList.addTask(t);
         return ui.showAddedTask(t, taskList);
     }
 
     /**
-     * Adds a deadline task.
+     * Updates a task in the task list.
      *
-     * @param description Task description.
-     * @param by          Due date input.
-     */
-    public String addDeadline(String description, String by) {
-        Task t = new Deadline(description, by);
-        taskList.addTask(t);
-        return ui.showAddedTask(t, taskList);
-    }
-
-    /**
-     * Adds an event task.
-     *
-     * @param description Task description.
-     * @param from        Start date input.
-     * @param to          End date input.
-     */
-    public String addEvent(String description, String from, String to) {
-        Task t = new Event(description, from, to);
-        taskList.addTask(t);
-        return ui.showAddedTask(t, taskList);
+     * @param index   One-based index of the task to update.
+     * @param cmdString Command string containing the updated task details.
+     * @return Confirmation message or error message if update fails.
+      */
+    public String updateTask(int index, String cmdString) {
+        assert(this.parser != null) : "Catbot must be initialised";
+        index--; // Convert to zero-based index
+        try {
+            Command taskCommand = this.parser.parseCommand(cmdString);
+            Task t = this.makeTask(taskCommand);
+            return this.taskList.update(index, t);
+        } catch (CatbotException e) {
+            return this.ui.showError(e.getMessage());
+        }
     }
 
     /**
@@ -135,26 +150,26 @@ public class Catbot {
     public String getResponse(String input) {
         assert this.parser != null : "Catbot must be initialised";
         try {
-            Command tokens = this.parser.parseCommand(input);
-            CommandEnum cmd = tokens.getCommandEnum();
-            ArrayList<String> argsList = tokens.getArgs();
-            switch (cmd) {
-            case TODO:
-                return this.addTodo(argsList.get(0));
-            case DEADLINE:
-                return this.addDeadline(argsList.get(0), argsList.get(1));
+            Command cmd = this.parser.parseCommand(input);
+            CommandEnum cmdIdx = cmd.getCommandEnum();
+            ArrayList<String> argsList = cmd.getArgs();
+            switch (cmdIdx) {
+            case TODO: // fallthrough
+            case DEADLINE: // fallthrough
             case EVENT:
-                return this.addEvent(argsList.get(0), argsList.get(1), argsList.get(2));
+                return this.addTask(this.makeTask(cmd));
             case LIST:
                 return this.taskList.list();
             case MARK:
-                return this.taskList.mark(tokens.getTaskIndex() - 1);
+                return this.taskList.mark(cmd.getTaskIndex() - 1);
             case UNMARK:
-                return this.taskList.unmark(tokens.getTaskIndex() - 1);
+                return this.taskList.unmark(cmd.getTaskIndex() - 1);
             case DELETE:
-                return this.taskList.delete(tokens.getTaskIndex() - 1);
+                return this.taskList.delete(cmd.getTaskIndex() - 1);
             case FIND:
                 return this.taskList.find(argsList.get(0));
+            case UPDATE:
+                return this.updateTask(cmd.getTaskIndex(), argsList.get(0));
             case BYE:
                 return this.saveAndQuit();
             default:
