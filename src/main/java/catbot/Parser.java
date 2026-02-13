@@ -22,6 +22,7 @@ public class Parser {
             + DateTimeUtil.INPUT_PATTERN + "> /to <" + DateTimeUtil.INPUT_PATTERN + ">";
     private static final String TASK_IDX_ERROR_MSG = "Please provide a valid task number.";
     private static final String FIND_ERROR_MSG = "Please provide a keyword to search for.";
+    private static final String UPDATE_ERROR_MSG = "Please provide the updated task details after the task number.";
 
     /**
      * Parse todo command from user input.
@@ -31,7 +32,7 @@ public class Parser {
      * @throws CatbotException If the input is invalid.
      */
     public Command parseTodoInput(String input) throws CatbotException {
-        String description = input.substring("todo ".length()).trim();
+        String description = input.substring(CommandEnum.TODO.name().length()).trim();
         if (description.isEmpty()) {
             throw new CatbotException(TODO_ERROR_MSG);
         }
@@ -50,7 +51,7 @@ public class Parser {
         if (tokens.length != 2) {
             throw new CatbotException(DEADLINE_ERROR_MSG);
         }
-        String description = tokens[0].substring("deadline ".length()).trim();
+        String description = tokens[0].substring(CommandEnum.DEADLINE.name().length()).trim();
         String by = tokens[1].trim();
         if (description.isEmpty() || by.isEmpty()) {
             throw new CatbotException(DEADLINE_ERROR_MSG);
@@ -66,7 +67,6 @@ public class Parser {
      * @throws CatbotException If the input is invalid.
      */
     public Command parseEventInput(String input) throws CatbotException {
-        String cmdKeyword = "event ";
         String fromFlag = " /from ";
         String toFlag = " /to ";
 
@@ -81,12 +81,12 @@ public class Parser {
         String to;
         if (fromIdx < toIdx) {
             // Order is: description /from from /to to
-            description = input.substring(cmdKeyword.length(), fromIdx).trim();
+            description = input.substring(CommandEnum.EVENT.name().length(), fromIdx).trim();
             from = input.substring(fromIdx + fromFlag.length(), toIdx).trim();
             to = input.substring(toIdx + toFlag.length()).trim();
         } else {
             // Order is: description /to to /from from
-            description = input.substring(cmdKeyword.length(), toIdx).trim();
+            description = input.substring(CommandEnum.EVENT.name().length(), toIdx).trim();
             to = input.substring(toIdx + toFlag.length(), fromIdx).trim();
             from = input.substring(fromIdx + fromFlag.length()).trim();
         }
@@ -122,11 +122,34 @@ public class Parser {
      * @throws CatbotException If the input is invalid.
      */
     public Command parseFindInput(String input) throws CatbotException {
-        String target = input.substring("find ".length());
+        String target = input.substring(CommandEnum.FIND.name().length()).trim();
         if (target.isEmpty()) {
             throw new CatbotException(FIND_ERROR_MSG);
         }
         return new Command(CommandEnum.FIND, new ArrayList<>(Arrays.asList(target)));
+    }
+
+    /**
+     * Parse update command from user input.
+     *
+     * @param input User input string.
+     * @return Command instance for update.
+     * @throws CatbotException If the input is invalid.
+     */
+    public Command parseUpdateInput(String input) throws CatbotException {
+        String updateInput = input.substring(CommandEnum.UPDATE.name().length()).trim();
+        String idxStr = updateInput.split(" ")[0];
+        int idx;
+        try {
+            idx = Integer.parseInt(idxStr);
+        } catch (NumberFormatException e) {
+            throw new CatbotException(TASK_IDX_ERROR_MSG);
+        }
+        String restOfInput = updateInput.substring(idxStr.length()).trim();
+        if (restOfInput.isEmpty()) {
+            throw new CatbotException(UPDATE_ERROR_MSG);
+        }
+        return new Command(CommandEnum.UPDATE, new ArrayList<>(Arrays.asList(restOfInput)), idx);
     }
 
     /**

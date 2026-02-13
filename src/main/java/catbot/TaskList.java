@@ -129,6 +129,21 @@ public class TaskList {
         return "Here are the matching tasks in your list:" + foundTasks;
     }
 
+    /**
+     * Updates the task at the given index with a new task.
+     *
+     * @param index   Zero-based task index.
+     * @param newTask New task to replace the old one.
+     * @return Confirmation message.
+     */
+    public String update(int index, Task newTask) {
+        if (index >= 0 && index < this.getSize()) {
+            this.taskList.set(index, newTask);
+            return "Got it. I've updated the task:\n" + newTask.toString();
+        }
+        return "Invalid task number.";
+    }
+
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
