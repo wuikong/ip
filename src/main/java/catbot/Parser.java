@@ -32,7 +32,7 @@ public class Parser {
      * @throws CatbotException If the input is invalid.
      */
     public Command parseTodoInput(String input) throws CatbotException {
-        String description = input.substring(CommandEnum.TODO.name().length() + 1).trim();
+        String description = input.substring(CommandEnum.TODO.name().length()).trim();
         if (description.isEmpty()) {
             throw new CatbotException(TODO_ERROR_MSG);
         }
@@ -51,7 +51,7 @@ public class Parser {
         if (tokens.length != 2) {
             throw new CatbotException(DEADLINE_ERROR_MSG);
         }
-        String description = tokens[0].substring(CommandEnum.DEADLINE.name().length() + 1).trim();
+        String description = tokens[0].substring(CommandEnum.DEADLINE.name().length()).trim();
         String by = tokens[1].trim();
         if (description.isEmpty() || by.isEmpty()) {
             throw new CatbotException(DEADLINE_ERROR_MSG);
@@ -81,12 +81,12 @@ public class Parser {
         String to;
         if (fromIdx < toIdx) {
             // Order is: description /from from /to to
-            description = input.substring(CommandEnum.EVENT.name().length() + 1, fromIdx).trim();
+            description = input.substring(CommandEnum.EVENT.name().length(), fromIdx).trim();
             from = input.substring(fromIdx + fromFlag.length(), toIdx).trim();
             to = input.substring(toIdx + toFlag.length()).trim();
         } else {
             // Order is: description /to to /from from
-            description = input.substring(CommandEnum.EVENT.name().length() + 1, toIdx).trim();
+            description = input.substring(CommandEnum.EVENT.name().length(), toIdx).trim();
             to = input.substring(toIdx + toFlag.length(), fromIdx).trim();
             from = input.substring(fromIdx + fromFlag.length()).trim();
         }
@@ -122,7 +122,7 @@ public class Parser {
      * @throws CatbotException If the input is invalid.
      */
     public Command parseFindInput(String input) throws CatbotException {
-        String target = input.substring(CommandEnum.FIND.name().length() + 1);
+        String target = input.substring(CommandEnum.FIND.name().length()).trim();
         if (target.isEmpty()) {
             throw new CatbotException(FIND_ERROR_MSG);
         }
@@ -137,7 +137,7 @@ public class Parser {
      * @throws CatbotException If the input is invalid.
      */
     public Command parseUpdateInput(String input) throws CatbotException {
-        String updateInput = input.substring(CommandEnum.UPDATE.name().length() + 1).trim();
+        String updateInput = input.substring(CommandEnum.UPDATE.name().length()).trim();
         String idxStr = updateInput.split(" ")[0];
         int idx;
         try {
