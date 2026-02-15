@@ -25,7 +25,7 @@ public class Parser {
     private static final String UPDATE_ERROR_MSG = "Please provide the updated task details after the task number.";
 
     /**
-     * Parse todo command from user input.
+     * Parses user input into a todo command.
      *
      * @param input User input string.
      * @return Command instance for todo.
@@ -40,7 +40,7 @@ public class Parser {
     }
 
     /**
-     * Parse deadline command from user input.
+     * Parses user input into a deadline command.
      *
      * @param input User input string.
      * @return Command instance for deadline.
@@ -60,7 +60,7 @@ public class Parser {
     }
 
     /**
-     * Parse event command from user input.
+     * Parses user input into an event command.
      *
      * @param input User input string.
      * @return Command instance for event.
@@ -98,7 +98,7 @@ public class Parser {
     }
 
     /**
-     * Parse commands that require a numeric task index.
+     * Parses commands that require a numeric task index.
      *
      * @param cmdIdx CommandEnum value.
      * @param input  User input string.
@@ -115,7 +115,7 @@ public class Parser {
     }
 
     /**
-     * Parse find command from user input.
+     * Parses user input into a find command.
      *
      * @param input User input string.
      * @return Command instance for find.
@@ -130,7 +130,7 @@ public class Parser {
     }
 
     /**
-     * Parse update command from user input.
+     * Parses user input into an update command.
      *
      * @param input User input string.
      * @return Command instance for update.
@@ -153,7 +153,7 @@ public class Parser {
     }
 
     /**
-     * Parse command from user input.
+     * Parses user input into a Command instance.
      *
      * @param input User input string.
      * @return Command instance.
@@ -183,7 +183,7 @@ public class Parser {
     }
 
     /**
-     * Parse a task from a data file line.
+     * Parses a data file line into a Task instance.
      *
      * @param dataLine Line from the data file representing a task.
      * @return Task instance.
