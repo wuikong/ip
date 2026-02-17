@@ -177,6 +177,8 @@ public class Parser {
         case BYE: // fallthrough
         case LIST:
             return new Command(cmdIdx);
+        case UPDATE:
+            return this.parseUpdateInput(input);
         default:
             throw new CatbotException("I'm sorry, I don't understand that command.");
         }

@@ -1,8 +1,12 @@
 todo read book
-deadline return book /by June 6th
+deadline return book /by 2026-02-20
 event project meeting /from Aug 6th 2pm /to 4pm
 mark 1
 list
 unmark 1
-delete 3
+delete 2
+find book
+update 1 deadline write book report /by 2026-02-21
+delete 1
+delete 1
 bye

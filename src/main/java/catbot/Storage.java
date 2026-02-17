@@ -62,7 +62,7 @@ public class Storage {
         }
 
         FileWriter writer = new FileWriter(this.filePath);
-        writer.write(taskList.toString() + "\n");
+        writer.write(taskList.toString());
         writer.close();
     }
 }
