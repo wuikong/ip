@@ -7,15 +7,13 @@ REM delete output from previous run
 if exist ACTUAL.TXT del ACTUAL.TXT
 
 REM compile the code into the bin folder
-javac  -cp ..\src\main\java -Xlint:none -d ..\bin ..\src\main\java\catbot\*.java
-IF ERRORLEVEL 1 (
-    echo ********** BUILD FAILURE **********
-    exit /b 1
-)
-REM no error here, errorlevel == 0
+REM Use gradle to compile with all dependencies
+cd ..
+call gradlew build -q
+cd text-ui-test
 
-REM run the program, feed commands from input.txt file and redirect the output to the ACTUAL.TXT
-java -classpath ..\bin Catbot < input.txt > ACTUAL.TXT
+REM run the program using gradle, feed commands from input.txt file and redirect the output to the ACTUAL.TXT
+java -classpath ..\build\classes\java\main catbot.Catbot < input.txt > ACTUAL.TXT
 
 REM compare the output to the expected output
 FC ACTUAL.TXT EXPECTED.TXT
