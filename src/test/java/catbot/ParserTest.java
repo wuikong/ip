@@ -80,4 +80,101 @@ public class ParserTest {
 
         assertEquals("Please provide a valid task number.", error.getMessage());
     }
+
+    @Test
+    public void parse_findWithKeyword_returnsTokens() throws Exception {
+        Parser parser = new Parser();
+        Command result = parser.parseCommand("find book");
+
+        assertEquals(CommandEnum.FIND, result.getCommandEnum());
+        assertEquals(List.of("book"), result.getArgs());
+    }
+
+    @Test
+    public void parse_findWithKeywordContainingSpaces_returnsTokens() throws Exception {
+        Parser parser = new Parser();
+        Command result = parser.parseCommand("find read book");
+
+        assertEquals(CommandEnum.FIND, result.getCommandEnum());
+        assertEquals(List.of("read book"), result.getArgs());
+    }
+
+    @Test
+    public void parse_findWithoutKeyword_throwsCatbotException() {
+        Parser parser = new Parser();
+
+        CatbotException error = assertThrows(CatbotException.class, () -> parser.parseCommand("find"));
+
+        assertEquals("Please provide a keyword to search for.", error.getMessage());
+    }
+
+    @Test
+    public void parse_findWithEmptyKeyword_throwsCatbotException() {
+        Parser parser = new Parser();
+
+        CatbotException error = assertThrows(CatbotException.class, () -> parser.parseCommand("find   "));
+
+        assertEquals("Please provide a keyword to search for.", error.getMessage());
+    }
+
+    @Test
+    public void parse_updateWithTodoDescription_returnsTokens() throws Exception {
+        Parser parser = new Parser();
+        Command result = parser.parseCommand("update 1 todo read magazine");
+
+        assertEquals(CommandEnum.UPDATE, result.getCommandEnum());
+        assertEquals(List.of("todo read magazine"), result.getArgs());
+        assertEquals(1, result.getTaskIndex());
+    }
+
+    @Test
+    public void parse_updateWithDeadlineDescription_returnsTokens() throws Exception {
+        Parser parser = new Parser();
+        Command result = parser.parseCommand("update 2 deadline submit report /by 2024-10-01 1800");
+
+        assertEquals(CommandEnum.UPDATE, result.getCommandEnum());
+        assertEquals(List.of("deadline submit report /by 2024-10-01 1800"), result.getArgs());
+        assertEquals(2, result.getTaskIndex());
+    }
+
+    @Test
+    public void parse_updateWithEventDescription_returnsTokens() throws Exception {
+        Parser parser = new Parser();
+        Command result = parser.parseCommand(
+                "update 3 event project meeting /from 2024-01-01 0900 /to 2024-01-01 1100");
+
+        assertEquals(CommandEnum.UPDATE, result.getCommandEnum());
+        assertEquals(List.of("event project meeting /from 2024-01-01 0900 /to 2024-01-01 1100"), result.getArgs());
+        assertEquals(3, result.getTaskIndex());
+    }
+
+    @Test
+    public void parse_updateWithNonNumericIndex_throwsCatbotException() {
+        Parser parser = new Parser();
+
+        CatbotException error = assertThrows(
+                CatbotException.class, () -> parser.parseCommand("update abc todo read magazine"));
+
+        assertEquals("Please provide a valid task number.", error.getMessage());
+    }
+
+    @Test
+    public void parse_updateWithoutDescription_throwsCatbotException() {
+        Parser parser = new Parser();
+
+        CatbotException error = assertThrows(
+                CatbotException.class, () -> parser.parseCommand("update 1"));
+
+        assertEquals("Please provide the updated task details after the task number.", error.getMessage());
+    }
+
+    @Test
+    public void parse_updateWithOnlyIndex_throwsCatbotException() {
+        Parser parser = new Parser();
+
+        CatbotException error = assertThrows(
+                CatbotException.class, () -> parser.parseCommand("update 1   "));
+
+        assertEquals("Please provide the updated task details after the task number.", error.getMessage());
+    }
 }
