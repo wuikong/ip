@@ -146,10 +146,8 @@ public class TaskList {
 
     @Override
     public String toString() {
-        StringBuilder sb = new StringBuilder();
-        for (Task t : taskList) {
-            sb.append(t.toDataString()).append("\n");
-        }
-        return sb.toString().trim();
+        return this.taskList.stream()
+                .map(Task::toDataString)
+                .reduce("", (acc, t) -> acc + t + "\n", String::concat).trim();
     }
 }
