@@ -10,14 +10,14 @@ public class Ui {
      * Shows the welcome message.
      */
     public String showWelcome() {
-        return "Hello! I'm Catbot 😸\nWhat can I do for you?";
+        return "Hello! I'm Catbot\nWhat can I do for you?";
     }
 
     /**
      * Shows the goodbye message.
      */
     public String showGoodbye() {
-        return "Bye. Hope to see you again soon! 😸";
+        return "Bye. Hope to see you again soon!";
     }
 
     /**
