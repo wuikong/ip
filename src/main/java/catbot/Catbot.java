@@ -134,6 +134,7 @@ public class Catbot {
     public static void main(String... args) {
         Catbot catbot = new Catbot();
         catbot.initialize();
+        System.out.println(catbot.showWelcome());
         String input;
         String response = "";
 

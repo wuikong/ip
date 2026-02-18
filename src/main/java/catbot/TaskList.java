@@ -9,8 +9,9 @@ import catbot.task.Task;
  * Manages a list of tasks and related operations.
  */
 public class TaskList {
-    private ArrayList<Task> taskList;
     private static final String INVALID_INDEX_MESSAGE = "Invalid task number.";
+
+    private ArrayList<Task> taskList;
 
     /**
      * Creates an empty task list.

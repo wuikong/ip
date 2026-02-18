@@ -20,6 +20,13 @@ public class Ui {
         return "Bye. Hope to see you again soon! ^'w'^";
     }
 
+    private String showTaskListSize(TaskList taskList) {
+        if (taskList.getSize() == 1) {
+            return "Now you have 1 task in the list. ^'w'^";
+        }
+        return "Now you have " + taskList.getSize() + " tasks in the list. ^'w'^";
+    }
+
     /**
      * Shows a message when a task is added.
      *
@@ -28,7 +35,7 @@ public class Ui {
      */
     public String showAddedTask(Task task, TaskList taskList) {
         return "Got it. I've added this task:\n" + task.toString()
-                + "\nNow you have " + taskList.getSize() + " tasks in the list. ^'w'^";
+                + "\n" + this.showTaskListSize(taskList);
     }
 
     /**
@@ -57,7 +64,7 @@ public class Ui {
      */
     public String showDeletedTask(Task task, TaskList taskList) {
         return "Noted. I've removed this task:\n" + task.toString()
-                + "\nNow you have " + taskList.getSize() + " tasks in the list. ^'w'^";
+                + "\n" + this.showTaskListSize(taskList);
     }
 
     /**
