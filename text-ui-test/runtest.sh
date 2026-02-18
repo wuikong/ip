@@ -13,11 +13,13 @@ then
 fi
 
 # compile the code using gradle
-if ! cd .. && ./gradlew build -q && cd text-ui-test
+cd ..
+if ! ./gradlew build -q
 then
     echo "********** BUILD FAILURE **********"
     exit 1
 fi
+cd text-ui-test
 
 # run the program, feed commands from input.txt file and redirect the output to the ACTUAL.TXT
 java -classpath ../build/classes/java/main catbot.Catbot < input.txt > ACTUAL.TXT
