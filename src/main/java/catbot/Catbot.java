@@ -55,8 +55,10 @@ public class Catbot {
             System.out.println(this.ui.showLoadError());
             this.taskList = new TaskList();
         }
+    }
 
-        System.out.println(this.ui.showWelcome());
+    public String showWelcome() {
+        return this.ui.showWelcome();
     }
 
     /**
@@ -139,6 +141,15 @@ public class Catbot {
             response = catbot.getResponse(input);
             System.out.println(response);
         }
+    }
+
+    /**
+     * Gets the goodbye message.
+     *
+     * @return Goodbye message string.
+     */
+    public String getGoodbyeMessage() {
+        return ui.showGoodbye();
     }
 
     /**
