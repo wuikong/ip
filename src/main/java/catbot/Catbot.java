@@ -107,7 +107,8 @@ public class Catbot {
         try {
             Command taskCommand = this.parser.parseCommand(cmdString);
             Task t = this.makeTask(taskCommand);
-            return this.taskList.update(index, t);
+            Task updatedTask = this.taskList.update(index, t);
+            return this.ui.showUpdatedTask(updatedTask);
         } catch (CatbotException e) {
             return this.ui.showError(e.getMessage());
         }
@@ -172,11 +173,14 @@ public class Catbot {
             case LIST:
                 return this.taskList.list();
             case MARK:
-                return this.taskList.mark(cmd.getTaskIndex() - 1);
+                Task markedTask = this.taskList.mark(cmd.getTaskIndex() - 1);
+                return this.ui.showMarkedTask(markedTask);
             case UNMARK:
-                return this.taskList.unmark(cmd.getTaskIndex() - 1);
+                Task unmarkedTask = this.taskList.unmark(cmd.getTaskIndex() - 1);
+                return this.ui.showUnmarkedTask(unmarkedTask);
             case DELETE:
-                return this.taskList.delete(cmd.getTaskIndex() - 1);
+                Task deletedTask = this.taskList.delete(cmd.getTaskIndex() - 1);
+                return this.ui.showDeletedTask(deletedTask, this.taskList);
             case FIND:
                 return this.taskList.find(argsList.get(0));
             case UPDATE:

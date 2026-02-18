@@ -10,14 +10,14 @@ public class Ui {
      * Shows the welcome message.
      */
     public String showWelcome() {
-        return "Hello! I'm Catbot\nWhat can I do for you?";
+        return "Hello! I'm Catbot\nWhat can I do for you? ^'w'^";
     }
 
     /**
      * Shows the goodbye message.
      */
     public String showGoodbye() {
-        return "Bye. Hope to see you again soon!";
+        return "Bye. Hope to see you again soon! ^'w'^";
     }
 
     /**
@@ -28,7 +28,45 @@ public class Ui {
      */
     public String showAddedTask(Task task, TaskList taskList) {
         return "Got it. I've added this task:\n" + task.toString()
-                + "\nNow you have " + taskList.getSize() + " tasks in the list.";
+                + "\nNow you have " + taskList.getSize() + " tasks in the list. ^'w'^";
+    }
+
+    /**
+     * Shows a message when a task is marked as done.
+     *
+     * @param task The task that was marked.
+     */
+    public String showMarkedTask(Task task) {
+        return "Nice! I've marked this task as done:\n" + task.toString();
+    }
+
+    /**
+     * Shows a message when a task is unmarked.
+     *
+     * @param task The task that was unmarked.
+     */
+    public String showUnmarkedTask(Task task) {
+        return "OK, I've marked this task as not done yet:\n" + task.toString();
+    }
+
+    /**
+     * Shows a message when a task is deleted.
+     *
+     * @param task     The task that was deleted.
+     * @param taskList The current task list.
+     */
+    public String showDeletedTask(Task task, TaskList taskList) {
+        return "Noted. I've removed this task:\n" + task.toString()
+                + "\nNow you have " + taskList.getSize() + " tasks in the list. ^'w'^";
+    }
+
+    /**
+     * Shows a message when a task is updated.
+     *
+     * @param task The updated task.
+     */
+    public String showUpdatedTask(Task task) {
+        return "Got it. I've updated the task:\n" + task.toString();
     }
 
     /**

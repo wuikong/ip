@@ -10,6 +10,7 @@ import catbot.task.Task;
  */
 public class TaskList {
     private ArrayList<Task> taskList;
+    private static final String INVALID_INDEX_MESSAGE = "Invalid task number.";
 
     /**
      * Creates an empty task list.
@@ -68,45 +69,46 @@ public class TaskList {
      * Marks the task at the given index as completed.
      *
      * @param index Zero-based task index.
-     * @return Confirmation message.
+     * @return The marked task.
+     * @throws CatbotException If the task index is invalid.
      */
-    public String mark(int index) {
+    public Task mark(int index) throws CatbotException {
         if (index >= 0 && index < this.getSize()) {
             Task t = this.taskList.get(index);
             t.mark();
-            return "Nice! I've marked this task as done:\n" + t.toString();
+            return t;
         }
-        return "Invalid task number.";
+        throw new CatbotException(INVALID_INDEX_MESSAGE);
     }
 
     /**
      * Marks the task at the given index as not completed.
      *
      * @param index Zero-based task index.
-     * @return Confirmation message.
+     * @return The unmarked task.
+     * @throws CatbotException If the task index is invalid.
      */
-    public String unmark(int index) {
+    public Task unmark(int index) throws CatbotException {
         if (index >= 0 && index < this.getSize()) {
             Task t = this.taskList.get(index);
             t.unmark();
-            return "OK, I've marked this task as not done yet:\n" + t.toString();
+            return t;
         }
-        return "Invalid task number.";
+        throw new CatbotException(INVALID_INDEX_MESSAGE);
     }
 
     /**
      * Removes the task at the given index.
      *
      * @param index Zero-based task index.
-     * @return Confirmation message.
+     * @return The deleted task.
+     * @throws CatbotException If the task index is invalid.
      */
-    public String delete(int index) {
+    public Task delete(int index) throws CatbotException {
         if (index >= 0 && index < this.getSize()) {
-            Task t = this.taskList.remove(index);
-            return "Noted. I've removed this task:\n" + t.toString()
-                    + "\nNow you have " + this.getSize() + " tasks in the list.";
+            return this.taskList.remove(index);
         }
-        return "Invalid task number.";
+        throw new CatbotException(INVALID_INDEX_MESSAGE);
     }
 
     /**
@@ -134,14 +136,15 @@ public class TaskList {
      *
      * @param index   Zero-based task index.
      * @param newTask New task to replace the old one.
-     * @return Confirmation message.
+     * @return The updated task.
+     * @throws CatbotException If the task index is invalid.
      */
-    public String update(int index, Task newTask) {
+    public Task update(int index, Task newTask) throws CatbotException {
         if (index >= 0 && index < this.getSize()) {
             this.taskList.set(index, newTask);
-            return "Got it. I've updated the task:\n" + newTask.toString();
+            return newTask;
         }
-        return "Invalid task number.";
+        throw new CatbotException(INVALID_INDEX_MESSAGE);
     }
 
     @Override

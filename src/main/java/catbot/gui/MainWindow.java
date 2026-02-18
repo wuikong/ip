@@ -57,16 +57,16 @@ public class MainWindow extends AnchorPane {
     private void handleUserInput() {
         assert catbot != null : "Catbot instance has not been set";
         String input = userInput.getText();
-        
+
         // Close the application if we're waiting to close after bye command
         if (shouldCloseOnNextInput) {
             userInput.clear();
             Platform.exit();
             return;
         }
-        
+
         String response = catbot.getResponse(input);
-        
+
         // Set flag to close on next input if the user sends bye command
         if (response.equals(catbot.getGoodbyeMessage())) {
             shouldCloseOnNextInput = true;
