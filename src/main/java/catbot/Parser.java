@@ -23,6 +23,7 @@ public class Parser {
     private static final String TASK_IDX_ERROR_MSG = "Please provide a valid task number.";
     private static final String FIND_ERROR_MSG = "Please provide a keyword to search for.";
     private static final String UPDATE_ERROR_MSG = "Please provide the updated task details after the task number.";
+    private static final String ILLEGAL_CHAR_MSG = "Input contains illegal characters. Please avoid using '|'.";
 
     /**
      * Parses user input into a todo command.
@@ -32,6 +33,9 @@ public class Parser {
      * @throws CatbotException If the input is invalid.
      */
     public Command parseTodoInput(String input) throws CatbotException {
+        if (input.contains(" \\| ")) {
+            throw new CatbotException(ILLEGAL_CHAR_MSG);
+        }
         String description = input.substring(CommandEnum.TODO.name().length()).trim();
         if (description.isEmpty()) {
             throw new CatbotException(TODO_ERROR_MSG);
@@ -47,6 +51,9 @@ public class Parser {
      * @throws CatbotException If the input is invalid.
      */
     public Command parseDeadlineInput(String input) throws CatbotException {
+        if (input.contains(" \\| ")) {
+            throw new CatbotException(ILLEGAL_CHAR_MSG);
+        }
         String[] tokens = input.split(" /by ");
         if (tokens.length != 2) {
             throw new CatbotException(DEADLINE_ERROR_MSG);
@@ -67,6 +74,9 @@ public class Parser {
      * @throws CatbotException If the input is invalid.
      */
     public Command parseEventInput(String input) throws CatbotException {
+        if (input.contains(" \\| ")) {
+            throw new CatbotException(ILLEGAL_CHAR_MSG);
+        }
         String fromFlag = " /from ";
         String toFlag = " /to ";
 
