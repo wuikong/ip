@@ -1,6 +1,7 @@
 package catbot;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -8,6 +9,7 @@ import org.junit.jupiter.api.Test;
 
 import catbot.task.Deadline;
 import catbot.task.Event;
+import catbot.task.Task;
 import catbot.task.Todo;
 
 public class TaskListTest {
@@ -55,66 +57,62 @@ public class TaskListTest {
     }
 
     @Test
-    public void mark_validIndex_marksTaskAsDone() {
+    public void mark_validIndex_marksTaskAsDone() throws CatbotException {
         taskList.addTask(new Todo("read book"));
-        String result = taskList.mark(0);
-        assertTrue(result.contains("Nice! I've marked this task as done:"));
-        assertTrue(result.contains("[T][X] read book"));
+        Task result = taskList.mark(0);
+        assertTrue(result.toString().contains("[T][X] read book"));
     }
 
     @Test
-    public void mark_invalidIndex_returnsErrorMessage() {
+    public void mark_invalidIndex_throwsException() {
         taskList.addTask(new Todo("read book"));
-        String result = taskList.mark(5);
-        assertEquals("Invalid task number.", result);
+        CatbotException exception = assertThrows(CatbotException.class, () -> taskList.mark(5));
+        assertEquals("Invalid task number.", exception.getMessage());
     }
 
     @Test
-    public void mark_negativeIndex_returnsErrorMessage() {
+    public void mark_negativeIndex_throwsException() {
         taskList.addTask(new Todo("read book"));
-        String result = taskList.mark(-1);
-        assertEquals("Invalid task number.", result);
+        CatbotException exception = assertThrows(CatbotException.class, () -> taskList.mark(-1));
+        assertEquals("Invalid task number.", exception.getMessage());
     }
 
     @Test
-    public void unmark_validIndex_unmarksDone() {
+    public void unmark_validIndex_unmarksDone() throws CatbotException {
         taskList.addTask(new Todo("read book"));
         taskList.mark(0);
-        String result = taskList.unmark(0);
-        assertTrue(result.contains("OK, I've marked this task as not done yet:"));
-        assertTrue(result.contains("[T][ ] read book"));
+        Task result = taskList.unmark(0);
+        assertTrue(result.toString().contains("[T][ ] read book"));
     }
 
     @Test
-    public void unmark_invalidIndex_returnsErrorMessage() {
+    public void unmark_invalidIndex_throwsException() {
         taskList.addTask(new Todo("read book"));
-        String result = taskList.unmark(5);
-        assertEquals("Invalid task number.", result);
+        CatbotException exception = assertThrows(CatbotException.class, () -> taskList.unmark(5));
+        assertEquals("Invalid task number.", exception.getMessage());
     }
 
     @Test
-    public void delete_validIndex_removesTask() {
+    public void delete_validIndex_removesTask() throws CatbotException {
         taskList.addTask(new Todo("read book"));
         taskList.addTask(new Todo("do homework"));
-        String result = taskList.delete(0);
-        assertTrue(result.contains("Noted. I've removed this task:"));
-        assertTrue(result.contains("[T][ ] read book"));
-        assertTrue(result.contains("Now you have 1 tasks in the list."));
+        Task result = taskList.delete(0);
+        assertTrue(result.toString().contains("[T][ ] read book"));
         assertEquals(1, taskList.getSize());
     }
 
     @Test
-    public void delete_invalidIndex_returnsErrorMessage() {
+    public void delete_invalidIndex_throwsException() {
         taskList.addTask(new Todo("read book"));
-        String result = taskList.delete(5);
-        assertEquals("Invalid task number.", result);
+        CatbotException exception = assertThrows(CatbotException.class, () -> taskList.delete(5));
+        assertEquals("Invalid task number.", exception.getMessage());
     }
 
     @Test
-    public void delete_negativeIndex_returnsErrorMessage() {
+    public void delete_negativeIndex_throwsException() {
         taskList.addTask(new Todo("read book"));
-        String result = taskList.delete(-1);
-        assertEquals("Invalid task number.", result);
+        CatbotException exception = assertThrows(CatbotException.class, () -> taskList.delete(-1));
+        assertEquals("Invalid task number.", exception.getMessage());
     }
 
     @Test
@@ -143,18 +141,18 @@ public class TaskListTest {
     }
 
     @Test
-    public void update_validIndex_updatesTask() {
+    public void update_validIndex_updatesTask() throws CatbotException {
         taskList.addTask(new Todo("read book"));
-        String result = taskList.update(0, new Todo("read magazine"));
-        assertTrue(result.contains("Got it. I've updated the task:"));
-        assertTrue(result.contains("[T][ ] read magazine"));
+        Task result = taskList.update(0, new Todo("read magazine"));
+        assertTrue(result.toString().contains("[T][ ] read magazine"));
     }
 
     @Test
-    public void update_invalidIndex_returnsErrorMessage() {
+    public void update_invalidIndex_throwsException() {
         taskList.addTask(new Todo("read book"));
-        String result = taskList.update(5, new Todo("read magazine"));
-        assertEquals("Invalid task number.", result);
+        CatbotException exception = assertThrows(CatbotException.class, () ->
+                taskList.update(5, new Todo("read magazine")));
+        assertEquals("Invalid task number.", exception.getMessage());
     }
 
     @Test
@@ -163,7 +161,7 @@ public class TaskListTest {
     }
 
     @Test
-    public void getSize_afterMultipleOperations_returnsCorrectSize() {
+    public void getSize_afterMultipleOperations_returnsCorrectSize() throws CatbotException {
         taskList.addTask(new Todo("task 1"));
         taskList.addTask(new Todo("task 2"));
         assertEquals(2, taskList.getSize());

@@ -55,8 +55,10 @@ public class Catbot {
             System.out.println(this.ui.showLoadError());
             this.taskList = new TaskList();
         }
+    }
 
-        System.out.println(this.ui.showWelcome());
+    public String showWelcome() {
+        return this.ui.showWelcome();
     }
 
     /**
@@ -105,7 +107,8 @@ public class Catbot {
         try {
             Command taskCommand = this.parser.parseCommand(cmdString);
             Task t = this.makeTask(taskCommand);
-            return this.taskList.update(index, t);
+            Task updatedTask = this.taskList.update(index, t);
+            return this.ui.showUpdatedTask(updatedTask);
         } catch (CatbotException e) {
             return this.ui.showError(e.getMessage());
         }
@@ -131,6 +134,7 @@ public class Catbot {
     public static void main(String... args) {
         Catbot catbot = new Catbot();
         catbot.initialize();
+        System.out.println(catbot.showWelcome());
         String input;
         String response = "";
 
@@ -139,6 +143,15 @@ public class Catbot {
             response = catbot.getResponse(input);
             System.out.println(response);
         }
+    }
+
+    /**
+     * Gets the goodbye message.
+     *
+     * @return Goodbye message string.
+     */
+    public String getGoodbyeMessage() {
+        return ui.showGoodbye();
     }
 
     /**
@@ -161,11 +174,14 @@ public class Catbot {
             case LIST:
                 return this.taskList.list();
             case MARK:
-                return this.taskList.mark(cmd.getTaskIndex() - 1);
+                Task markedTask = this.taskList.mark(cmd.getTaskIndex() - 1);
+                return this.ui.showMarkedTask(markedTask);
             case UNMARK:
-                return this.taskList.unmark(cmd.getTaskIndex() - 1);
+                Task unmarkedTask = this.taskList.unmark(cmd.getTaskIndex() - 1);
+                return this.ui.showUnmarkedTask(unmarkedTask);
             case DELETE:
-                return this.taskList.delete(cmd.getTaskIndex() - 1);
+                Task deletedTask = this.taskList.delete(cmd.getTaskIndex() - 1);
+                return this.ui.showDeletedTask(deletedTask, this.taskList);
             case FIND:
                 return this.taskList.find(argsList.get(0));
             case UPDATE:
