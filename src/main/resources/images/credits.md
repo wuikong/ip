@@ -1,1 +1,2 @@
-Catbot.jpg: https://wallpapercave.com/wp/wp5003547.png
+Catbot.jpg: self-drawn, referenced from https://github.com/Externalizable/bongo.cat
+User.jpeg: original photo
