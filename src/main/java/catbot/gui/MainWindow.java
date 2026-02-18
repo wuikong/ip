@@ -26,8 +26,8 @@ public class MainWindow extends AnchorPane {
     private Catbot catbot;
     private boolean shouldCloseOnNextInput = false;
 
-    private Image userImage = new Image(this.getClass().getResourceAsStream("/images/DaUser.png"));
-    private Image catbotImage = new Image(this.getClass().getResourceAsStream("/images/DaDuke.png"));
+    private Image userImage = new Image(this.getClass().getResourceAsStream("/images/User.jpeg"));
+    private Image catbotImage = new Image(this.getClass().getResourceAsStream("/images/Catbot.jpg"));
 
     @FXML
     public void initialize() {
