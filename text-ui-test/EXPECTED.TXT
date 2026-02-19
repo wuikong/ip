@@ -1,33 +1,35 @@
-Hello! I'm Catbot
+Hello! I'm Catbot, meow.
 What can I do for you? ^'w'^
-Got it. I've added this task:
+Got it. I've added this task, meow:
 [T][ ] read book
 Now you have 1 task in the list. ^'w'^
-Got it. I've added this task:
+Got it. I've added this task, meow:
 [D][ ] return book (by: 2026-02-20)
 Now you have 2 tasks in the list. ^'w'^
-Got it. I've added this task:
+Got it. I've added this task, meow:
 [E][ ] project meeting (from: Aug 6th 2pm to: 4pm)
 Now you have 3 tasks in the list. ^'w'^
-Nice! I've marked this task as done:
+Nice! I've marked this task as done, meow:
 [T][X] read book
 Here are the tasks in your list:
 1. [T][X] read book
 2. [D][ ] return book (by: 2026-02-20)
 3. [E][ ] project meeting (from: Aug 6th 2pm to: 4pm)
-OK, I've marked this task as not done yet:
+OK, I've marked this task as not done yet, meow:
 [T][ ] read book
-Noted. I've removed this task:
+Noted. I've removed this task, meow:
 [D][ ] return book (by: 2026-02-20)
 Now you have 2 tasks in the list. ^'w'^
 Here are the matching tasks in your list:
 1. [T][ ] read book
-Got it. I've updated the task:
+Got it. I've updated the task, meow:
 [D][ ] write book report (by: 2026-02-21)
-Noted. I've removed this task:
+Noted. I've removed this task, meow:
 [D][ ] write book report (by: 2026-02-21)
 Now you have 1 task in the list. ^'w'^
-Noted. I've removed this task:
+Noted. I've removed this task, meow:
 [E][ ] project meeting (from: Aug 6th 2pm to: 4pm)
 Now you have 0 tasks in the list. ^'w'^
+I'm sorry, I don't understand that command. ^;w;^
+Valid commands: todo, deadline, event, list, mark, unmark, delete, find, update, bye.
 Bye. Hope to see you again soon! ^'w'^

@@ -9,4 +9,5 @@ find book
 update 1 deadline write book report /by 2026-02-21
 delete 1
 delete 1
+foo bar
 bye
