@@ -12,7 +12,7 @@ Adds a to-do task.
 
 Format: `todo DESCRIPTION`
 
-- The character '|' cannot be used in the description.
+- The character '\|' cannot be used in the description.
 
 Example: `todo sweep floor`
 
@@ -22,7 +22,7 @@ Adds a task with a deadline.
 
 Format: `deadline DESCRIPTION /by DATETIME`
 
-- The character '|' cannot be used in the description.
+- The character '\|' cannot be used in the description.
 - Datetime should be in the format `yyyy-MM-dd HHmm`. Improper datetime is accepted and displayed as-is.
 
 Example: `deadline read book /by 2026-02-20 1600`
@@ -33,7 +33,7 @@ Adds a task with a start and end time.
 
 Format: `event DESCRIPTION /from DATETIME /to DATETIME`
 
-- The character '|' cannot be used in the description.
+- The character '\|' cannot be used in the description.
 - Datetime should be in the format `yyyy-MM-dd HHmm`. Improper datetime is accepted and displayed as-is.
 - The fields `/from` and `/to` may be in any order.
 
