@@ -47,7 +47,10 @@ public class ParserTest {
 
         CatbotException error = assertThrows(CatbotException.class, () -> parser.parseCommand("foo bar"));
 
-        assertEquals("I'm sorry, I don't understand that command.", error.getMessage());
+        assertEquals(
+            "I'm sorry, I don't understand that command. ^;w;^\n"
+                + "Valid commands: todo, deadline, event, list, mark, unmark, delete, find, update, bye.",
+            error.getMessage());
     }
 
     @Test
@@ -78,7 +81,7 @@ public class ParserTest {
         CatbotException error = assertThrows(
                 CatbotException.class, () -> parser.parseCommand("mark two"));
 
-        assertEquals("Please provide a valid task number.", error.getMessage());
+        assertEquals("Task number must be a valid integer.", error.getMessage());
     }
 
     @Test
@@ -155,7 +158,7 @@ public class ParserTest {
         CatbotException error = assertThrows(
                 CatbotException.class, () -> parser.parseCommand("update abc todo read magazine"));
 
-        assertEquals("Please provide a valid task number.", error.getMessage());
+        assertEquals("Task number must be a valid integer.", error.getMessage());
     }
 
     @Test
