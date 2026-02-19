@@ -25,6 +25,8 @@ public class Main extends Application {
             stage.setScene(scene);
             stage.setTitle("Catbot");
             catbot.initialize();
+            stage.setMinHeight(220);
+            stage.setMinWidth(417);
             fxmlLoader.<MainWindow>getController().setCatbot(catbot); // inject the Catbot instance
             stage.setOnCloseRequest(event -> System.out.println(catbot.saveAndQuit()));
             stage.show();

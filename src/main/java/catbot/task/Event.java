@@ -3,6 +3,8 @@ package catbot.task;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeParseException;
 
+import catbot.CatbotException;
+
 /**
  * Represents a task that occurs within a time range.
  */
@@ -19,7 +21,7 @@ public class Event extends Task {
      * @param from Start date input.
      * @param to End date input.
      */
-    public Event(String description, String from, String to) {
+    public Event(String description, String from, String to) throws CatbotException {
         super(description);
         this.from = from;
         this.to = to;
@@ -34,6 +36,10 @@ public class Event extends Task {
             this.toDateTime = LocalDateTime.parse(to, DateTimeUtil.INPUT_FORMAT);
         } catch (DateTimeParseException e) {
             this.toDateTime = null;
+        }
+
+        if (this.fromDateTime != null && this.toDateTime != null && this.fromDateTime.isAfter(this.toDateTime)) {
+            throw new CatbotException("Event start time cannot be after end time.");
         }
     }
 

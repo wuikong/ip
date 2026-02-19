@@ -121,7 +121,7 @@ public class TaskList {
     public String find(String keyword) {
         String foundTasks = Stream.iterate(0, n -> n + 1)
                 .limit(this.taskList.size())
-                .filter(i -> this.taskList.get(i).isInDescription(keyword))
+                .filter(i -> this.taskList.get(i).isInDescription(keyword.toLowerCase()))
                 .reduce("", (acc, i) ->
                         acc + "\n" + (i + 1) + ". "
                         + this.taskList.get(i).toString(),
