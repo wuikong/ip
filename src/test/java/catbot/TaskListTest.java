@@ -27,7 +27,7 @@ public class TaskListTest {
     }
 
     @Test
-    public void addTask_multipleTasks_increasesSize() {
+    public void addTask_multipleTasks_increasesSize() throws CatbotException{
         taskList.addTask(new Todo("read book"));
         taskList.addTask(new Deadline("submit report", "2024-10-01 1800"));
         taskList.addTask(new Event("project meeting", "2024-08-06 1400", "2024-08-06 1600"));
