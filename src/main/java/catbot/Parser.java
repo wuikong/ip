@@ -20,7 +20,7 @@ public class Parser {
             + DateTimeUtil.INPUT_PATTERN + ">";
     private static final String EVENT_ERROR_MSG = "Invalid event format. Use: event <description> /from <"
             + DateTimeUtil.INPUT_PATTERN + "> /to <" + DateTimeUtil.INPUT_PATTERN + ">";
-    private static final String TASK_IDX_ERROR_MSG = "Please provide a valid task number.";
+    private static final String TASK_IDX_ERROR_MSG = "Task number must be a valid integer.";
     private static final String FIND_ERROR_MSG = "Please provide a keyword to search for.";
     private static final String UPDATE_ERROR_MSG = "Please provide the updated task details after the task number.";
     private static final String ILLEGAL_CHAR_MSG = "Input contains illegal characters. Please avoid using '|'.";
@@ -191,7 +191,7 @@ public class Parser {
             return this.parseUpdateInput(input);
         default:
             throw new CatbotException(
-                "I'm sorry, I don't understand that command.\n"
+                "I'm sorry, I don't understand that command. ^;w;^\n"
                 + "Valid commands: todo, deadline, event, list, mark, unmark, delete, find, update, bye."
             );
         }

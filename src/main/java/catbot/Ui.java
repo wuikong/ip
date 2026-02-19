@@ -10,7 +10,7 @@ public class Ui {
      * Shows the welcome message.
      */
     public String showWelcome() {
-        return "Hello! I'm Catbot\nWhat can I do for you? ^'w'^";
+        return "Hello! I'm Catbot, meow.\nWhat can I do for you? ^'w'^";
     }
 
     /**
@@ -34,7 +34,7 @@ public class Ui {
      * @param taskList The current task list.
      */
     public String showAddedTask(Task task, TaskList taskList) {
-        return "Got it. I've added this task:\n" + task.toString()
+        return "Got it. I've added this task, meow:\n" + task.toString()
                 + "\n" + this.showTaskListSize(taskList);
     }
 
@@ -44,7 +44,7 @@ public class Ui {
      * @param task The task that was marked.
      */
     public String showMarkedTask(Task task) {
-        return "Nice! I've marked this task as done:\n" + task.toString();
+        return "Nice! I've marked this task as done, meow:\n" + task.toString();
     }
 
     /**
@@ -53,7 +53,7 @@ public class Ui {
      * @param task The task that was unmarked.
      */
     public String showUnmarkedTask(Task task) {
-        return "OK, I've marked this task as not done yet:\n" + task.toString();
+        return "OK, I've marked this task as not done yet, meow:\n" + task.toString();
     }
 
     /**
@@ -63,7 +63,7 @@ public class Ui {
      * @param taskList The current task list.
      */
     public String showDeletedTask(Task task, TaskList taskList) {
-        return "Noted. I've removed this task:\n" + task.toString()
+        return "Noted. I've removed this task, meow:\n" + task.toString()
                 + "\n" + this.showTaskListSize(taskList);
     }
 
@@ -73,7 +73,7 @@ public class Ui {
      * @param task The updated task.
      */
     public String showUpdatedTask(Task task) {
-        return "Got it. I've updated the task:\n" + task.toString();
+        return "Got it. I've updated the task, meow:\n" + task.toString();
     }
 
     /**
