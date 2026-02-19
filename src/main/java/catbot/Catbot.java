@@ -189,7 +189,10 @@ public class Catbot {
             case BYE:
                 return this.saveAndQuit();
             default:
-                throw new CatbotException("I'm sorry, I don't understand that command.");
+                throw new CatbotException(
+                    "I'm sorry, I don't understand that command.\n"
+                    + "Valid commands: todo, deadline, event, list, mark, unmark, delete, find, update, bye."
+                );
             }
         } catch (CatbotException e) {
             return this.ui.showError(e.getMessage());
