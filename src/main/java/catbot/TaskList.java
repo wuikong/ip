@@ -61,9 +61,8 @@ public class TaskList {
         return "Here are the tasks in your list:"
                 + Stream.iterate(0, n -> n + 1)
                 .limit(this.taskList.size())
-                .reduce("", (acc, i) ->
-                        acc + "\n" + (i + 1) + ". "
-                        + this.taskList.get(i).toString(), String::concat);
+                .map(i -> (i + 1) + ". " + this.taskList.get(i).toString())
+                .reduce("", (acc, s) -> acc + "\n" + s);
     }
 
     /**
@@ -122,10 +121,8 @@ public class TaskList {
         String foundTasks = Stream.iterate(0, n -> n + 1)
                 .limit(this.taskList.size())
                 .filter(i -> this.taskList.get(i).isInDescription(keyword.toLowerCase()))
-                .reduce("", (acc, i) ->
-                        acc + "\n" + (i + 1) + ". "
-                        + this.taskList.get(i).toString(),
-                        String::concat);
+                .map(i -> (i + 1) + ". " + this.taskList.get(i).toString())
+                .reduce("", (acc, s) -> acc + "\n" + s);
         if (foundTasks.isEmpty()) {
             return "No matching tasks found.";
         }
@@ -152,6 +149,7 @@ public class TaskList {
     public String toString() {
         return this.taskList.stream()
                 .map(Task::toDataString)
-                .reduce("", (acc, t) -> acc + t + "\n", String::concat).trim();
+                .reduce("", (acc, t) -> acc + t + "\n", String::concat)
+                .trim();
     }
 }
