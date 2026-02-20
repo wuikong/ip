@@ -45,7 +45,6 @@ public class MainWindow extends AnchorPane {
      */
     private void showWelcomeMessage() {
         dialogContainer.getChildren().add(DialogBox.getCatbotDialog(catbot.showWelcome(), catbotImage));
-        dialogContainer.getChildren().add(DialogBox.getCatbotDialog(catbot.getResponse("list"), catbotImage));
     }
 
     /**
