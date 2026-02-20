@@ -115,5 +115,5 @@ Format: `bye`
 
 ## Saving the data
 
-Catbot data is saved in the hard disk when you send the `bye` command.
-Closing the program before sending `bye` will discard all changes made to the task list.
+Catbot data is saved in the hard disk when you send the `bye` command
+or close the app by clicking on the X button.
